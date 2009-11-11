@@ -25,7 +25,7 @@
 //                return an error because it the image is non-existent. Then
 //                it returns the file pointer.
 // ============================================================================
-FILE readImage(char * filename);
+FILE *readImage(char * filename);
 
 
 // ===  FUNCTION  =============================================================

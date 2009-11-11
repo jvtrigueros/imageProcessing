@@ -29,12 +29,13 @@
 // ============================================================================
 FILE *readImage(char *filename)
 {
+    printf("The size of the str is:%d\n",strlen(filename));
     FILE *fp = fopen(filename,"rb");
 
     // Test to see if the image was read properly
     if ( fp == NULL ) 
     {
-        fputs("File was not read properly.", stderr);
+        fputs("File was not read properly.\n", stderr);
         exit(1);
     }
 
@@ -49,12 +50,12 @@ FILE *readImage(char *filename)
 int *createImageBuffer(FILE *image)
 {
     // Create space for header
-    unsigned char buff[54];
+    char buff[54];
     size_t n = fread( buff, sizeof(buff[0]), sizeof(buff),image);
 
     if( (int)n != 54)
     {
-        fputs("The file was not read properly", stderr);
+        fputs("The file was not read properly\n", stderr);
         exit(2);
     }
 

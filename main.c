@@ -6,13 +6,15 @@ Descr: gets a full name
 */
 
 #include <stdio.h>
-#include <strings.h>
+#include <string.h>
 #include <stdlib.h>
 #include "imageIO.h"
 
 int main()/*starts main method*/
 {	
  	int choice; 
+    FILE *imageHandler;
+
 	while(choice != 7)
 	{
 		printf("\nBMP Image Processing Program \n");/*creates the menu*/
@@ -29,9 +31,11 @@ int main()/*starts main method*/
 		{
 			char file_name[32];/*creates character array */
 			printf("Please insert image name\n");
-			scanf("%s[^\n]", file_name);/*stores file name in array image*/
+//			scanf("%s[^\n]", file_name);/*stores file name in array image*/
+//            *imageHandler = readImage(file_name);
+            *imageHandler = readImage("test.bmp");
+//			*createImageBuffer(*imageHandler)
 			
-
 		}
 
 		else if(choice == 2)/*write image */
