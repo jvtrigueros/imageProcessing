@@ -42,7 +42,7 @@ int *createImageBuffer(FILE *image);
 //                first 54 bytes of the program. It returns 1 if everything 
 //                went well 0 otherwise.
 // ============================================================================
-int readBMPHeader(FILE *image, char *headerBuffer);
+int readBMPHeader(FILE *image, char *headerBuffer, int sizeOfHeader);
 
 // ===  FUNCTION  =============================================================
 //         Name:  displayBMPHeader

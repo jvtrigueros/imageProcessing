@@ -72,17 +72,17 @@ int *createImageBuffer(FILE *image)
 //                done here will be reflected once we return to the calling 
 //                function.
 // ============================================================================
-int readBMPHeader(FILE *image, char *headerBuffer)
+int readBMPHeader(FILE *image, char *headerBuffer, int sizeOfHeader)
 {
     // This variable below determines the size of the chunks being read. In 
     // this case they are 1 byte.
     const int ELEMENTSIZE = 1;
 
-    size_t check = fread(headerBuffer, ELEMENTSIZE ,sizeof(headerBuffer), image);
+    size_t check = fread(headerBuffer, ELEMENTSIZE ,sizeOfHeader, image);
 	
     // Whatever we read must be the same size of the buffer, otherwise we 
     // missed something and we're facked. 
-    if ( (int)check != sizeof(headerBuffer) )
+    if ( (int)check != sizeOfHeader )
     {
        fputs("readBMPHeader:The file was not read properly\n", stderr);
        return 0; 
@@ -104,3 +104,46 @@ void displayBMPHeader ( char *headerBuffer, int size )
         printf("%d: %c %x\n",i,headerBuffer[i], headerBuffer[i]);
 //        printf("File type:%c%c\n",headerBuffer[1],headerBuffer[2]);
 }        // -----  end of function displayBMPHeader  -----
+
+
+
+// ===  FUNCTION  =============================================================
+//         Name:  extractBMPHeaderInfo
+//  Description:  This will extract header information and for now it'll just 
+//                print it out, but the plan is that this info should be put
+//                into a struct. 11/11/2009 11:54:23 PM
+// ============================================================================
+void extractBMPHeaderInfo ( char * headerBuffer, int headerSize /* future arguments: struct reference */ )
+{
+    printf("=== Header Info ====\n");
+    // This variable will show the location of where we are looking in the array
+    int location = 0;
+
+    // Determines correct BMP type
+    printf("File type: %c%c\n", headerBuffer[location], headerBuffer[location + 1]);
+    location += 2;
+
+    // Displays size of BMP in bytes
+    printf("File size: %x %x %x %x\n",
+            headerBuffer[location],headerBuffer[location + 1],
+            headerBuffer[location + 2],
+            headerBuffer[location + 3]);
+    location +=4;
+
+    // Displays application specific data
+    printf("Application Specific: %x %x %x %x\n",
+            headerBuffer[location],headerBuffer[location + 1],
+            headerBuffer[location + 2],
+            headerBuffer[location + 3]);
+    location +=4;
+
+    // Displays header offset
+    printf("Header Offset: %x %x %x %x\n",
+            headerBuffer[location],headerBuffer[location + 1],
+            headerBuffer[location + 2],
+            headerBuffer[location + 3]);
+    location +=4;
+    
+    
+
+}        // -----  end of function extractBMPHeaderInfo  -----
