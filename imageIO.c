@@ -76,15 +76,15 @@ int readBMPHeader(FILE *image, char *headerBuffer)
 {
     // This variable below determines the size of the chunks being read. In 
     // this case they are 1 byte.
-    // const int ELEMENTSIZE = 1;r
+    const int ELEMENTSIZE = 1;
 
-    size_t check = fread(headerBuffer, sizeof(headerBuffer[0]),sizeof(headerBuffer), image);
+    size_t check = fread(headerBuffer, ELEMENTSIZE ,sizeof(headerBuffer), image);
 	
     // Whatever we read must be the same size of the buffer, otherwise we 
     // missed something and we're facked. 
     if ( (int)check != sizeof(headerBuffer) )
     {
-       fputs("The file was not read properly\n", stderr);
+       fputs("readBMPHeader:The file was not read properly\n", stderr);
        return 0; 
     }
 
@@ -97,10 +97,10 @@ int readBMPHeader(FILE *image, char *headerBuffer)
 //  Description:  This will display the header information that was gotten by 
 //                using readBMPHeader.
 // ============================================================================
-void displayBMPHeader ( char *headerBuffer )
+void displayBMPHeader ( char *headerBuffer, int size )
 {
     int i = 0;
-    for(; i < 54 ; i++)
+    for(; i < size ; i++)
         printf("%d: %c %x\n",i,headerBuffer[i], headerBuffer[i]);
 //        printf("File type:%c%c\n",headerBuffer[1],headerBuffer[2]);
 }        // -----  end of function displayBMPHeader  -----

@@ -14,7 +14,7 @@ make -f make_test.mk
 int main()/*starts main method*/
 {	
     // Global variables
-    const int SIZEOFBMPHEADER = 54;O
+    const int SIZEOFBMPHEADER = 54;
     int stringLength = 32;
 
 
@@ -47,7 +47,7 @@ int main()/*starts main method*/
         printf("Fail SOB!!!\n");
     
 
-    displayBMPHeader(header);
+    displayBMPHeader(header, SIZEOFBMPHEADER);
 
     free(filename);
     free(header);

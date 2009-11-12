@@ -49,6 +49,6 @@ int readBMPHeader(FILE *image, char *headerBuffer);
 //  Description:  This will display the header information that was gotten by 
 //                using readBMPHeader.
 // ============================================================================
-void displayBMPHeader ( int *headerBuffer );
+void displayBMPHeader ( char *headerBuffer, int size );
 
 #endif /* IMAGEIO_H */
