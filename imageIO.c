@@ -19,7 +19,32 @@
 #include    <stdio.h>
 #include    <stdlib.h>
 #include    <string.h>
+#include    "imageIO.h"
 
+//TODO: make struct here
+//struct temp possibly
+typedef struct
+{
+    int width;
+    int height;
+    char **red;
+    char **green;
+    char **blue;
+}bmp_image;
+   
+
+// ===  FUNCTION  =============================================================
+//         Name:  arrayInit()
+//  Description:  This function will set the value of a given array
+// ============================================================================
+void arrayInit (char * header,char *section, int currentLoc, int numberOfBytesToRead )
+{
+    int i = 0;
+    for(;i < numberOfBytesToRead; i++)
+    {
+        section[i] = header[currentLoc + i];
+    }
+}        // -----  end of function arrayInit  -----
 
 // ===  FUNCTION  =============================================================
 //         Name:  readImage
@@ -114,9 +139,14 @@ void displayBMPHeader ( char *headerBuffer, int size )
 // ============================================================================
 void extractBMPHeaderInfo ( char * headerBuffer, int headerSize /* future arguments: struct reference */ )
 {
+    const int HALFWORD = 2;
+    const int WORD = 4;
+
     printf("=== Header Info ====\n");
     // This variable will show the location of where we are looking in the array
     int location = 0;
+    char *temp = malloc(WORD);
+        
 
     // Determines correct BMP type
     printf("File type: %c%c\n", headerBuffer[location], headerBuffer[location + 1]);
@@ -127,7 +157,10 @@ void extractBMPHeaderInfo ( char * headerBuffer, int headerSize /* future argume
             headerBuffer[location],headerBuffer[location + 1],
             headerBuffer[location + 2],
             headerBuffer[location + 3]);
-    location +=4;
+    arrayInit(headerBuffer,temp,location,WORD);
+    printf("File size: %d\n", concatenateBits(temp,WORD));
+
+    location +=4; 
 
     // Displays application specific data
     printf("Application Specific: %x %x %x %x\n",
@@ -136,11 +169,17 @@ void extractBMPHeaderInfo ( char * headerBuffer, int headerSize /* future argume
             headerBuffer[location + 3]);
     location +=4;
 
+    //test	i think it works check to make sure its ok
+    //end
+
+
     // Displays header offset
     printf("Header Offset: %x %x %x %x\n",
             headerBuffer[location],headerBuffer[location + 1],
             headerBuffer[location + 2],
             headerBuffer[location + 3]);
+    arrayInit(headerBuffer,temp,location,WORD);
+    printf("Header Offset: %d\n", concatenateBits(temp,WORD));
     location +=4;
     
     // Displays byte remaining after this point   
@@ -148,6 +187,8 @@ void extractBMPHeaderInfo ( char * headerBuffer, int headerSize /* future argume
             headerBuffer[location],headerBuffer[location + 1],
             headerBuffer[location + 2],
             headerBuffer[location + 3]);
+    arrayInit(headerBuffer,temp,location,WORD);
+    printf("Bytes Remaining: %d\n", concatenateBits(temp,WORD));
     location +=4;
 
     // Width in pixels
@@ -155,6 +196,8 @@ void extractBMPHeaderInfo ( char * headerBuffer, int headerSize /* future argume
             headerBuffer[location],headerBuffer[location + 1],
             headerBuffer[location + 2],
             headerBuffer[location + 3]);
+    arrayInit(headerBuffer,temp,location,WORD);
+    printf("Width: %d\n", concatenateBits(temp,WORD));
     location +=4;
     
     // Height in pixels
@@ -162,6 +205,8 @@ void extractBMPHeaderInfo ( char * headerBuffer, int headerSize /* future argume
             headerBuffer[location],headerBuffer[location + 1],
             headerBuffer[location + 2],
             headerBuffer[location + 3]);
+    arrayInit(headerBuffer,temp,location,WORD);
+    printf("Height: %d\n", concatenateBits(temp,WORD));
     location +=4;
 
     // We can ignore the next 12 bytes so we just add 12 to the location.
@@ -179,13 +224,17 @@ void extractBMPHeaderInfo ( char * headerBuffer, int headerSize /* future argume
             headerBuffer[location],headerBuffer[location + 1],
             headerBuffer[location + 2],
             headerBuffer[location + 3]);
+    arrayInit(headerBuffer,temp,location,WORD);
+    printf("Width resolution: %d\n", concatenateBits(temp,WORD));
     location +=4;
     
-    // Vertical resolution in pixels/meter
+    // Vertical resolution in pixels/meter 
     printf("Vertical resolution: %x %x %x %x\n",
             headerBuffer[location],headerBuffer[location + 1],
             headerBuffer[location + 2],
             headerBuffer[location + 3]);
+    arrayInit(headerBuffer,temp,location,WORD);
+    printf("Vertical resolution: %d\n", concatenateBits(temp,WORD));
     location +=4;
 
     // We can ignore the next 8 bytes so we just add 8 to the location.
@@ -196,4 +245,43 @@ void extractBMPHeaderInfo ( char * headerBuffer, int headerSize /* future argume
     //----------------------------------------------------------------------
     location += 4*2;
 
+    // Release memory allocated for char* temp
+    free(temp);
 }        // -----  end of function extractBMPHeaderInfo  -----
+
+
+// ===  FUNCTION  =============================================================
+//         Name:  concatenateBits()
+//  Description:  This function will concatenate bits so that we get the actual
+//                number that we are working with.
+// ============================================================================
+unsigned int concatenateBits (char* bytes, int numberOfBytes)
+{
+    //TODO: Fix the extra shift.
+
+    //----------------------------------------------------------------------
+    //  This below code will just be for testing purposes to see if I can 
+    //  actually just display these figures as hex
+    //----------------------------------------------------------------------
+//    printf("test:%x\n",bytes[numberOfBytes - 4]);          // Test PASSED
+
+    // Create a bit buffer where we will concatenate the bits
+    unsigned int bitBuffer = 0x00;
+
+    bitBuffer = bitBuffer | bytes[numberOfBytes - 1];
+    bitBuffer = bitBuffer << 8;
+
+
+    // Concatenate the bits using a for loop
+    int i = numberOfBytes - 1;
+    for(;0 <= i ; i--)
+    {
+        bitBuffer = bitBuffer | bytes[i];   
+        bitBuffer = bitBuffer << 8;
+    }
+
+    // Undo the extra 8bit shift from the for loop
+    bitBuffer = bitBuffer >> 8;
+    
+    return bitBuffer;
+}        // -----  end of function concatenateBits  -----

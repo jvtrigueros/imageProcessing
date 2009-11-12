@@ -44,6 +44,13 @@ int main()/*starts main method*/
     else
         printf("Fail SOB!!!\n");
 
+
+    //----------------------------------------------------------------------
+    //  This is part of the concatenation test
+    //----------------------------------------------------------------------
+    char temp[] = { header[2],header[3],header[4],header[5] };
+    concatenateBits(temp , 4);
+
     extractBMPHeaderInfo(header, SIZEOFBMPHEADER);
     
 //    printf("%x %x %x %x\n",header[2],header[3],header[4],header[5]);

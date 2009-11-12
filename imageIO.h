@@ -51,4 +51,12 @@ int readBMPHeader(FILE *image, char *headerBuffer, int sizeOfHeader);
 // ============================================================================
 void displayBMPHeader ( char *headerBuffer, int size );
 
+
+// ===  FUNCTION  =============================================================
+//         Name:  concatenateBits()
+//  Description:  This function will concatenate bits so that we get the actual
+//                number that we are working with.
+// ============================================================================
+unsigned int concatenateBits (char* bytes, int numberOfBytes);
+
 #endif /* IMAGEIO_H */
