@@ -31,9 +31,8 @@ int main()/*starts main method*/
 		{
 			char file_name[32];/*creates character array */
 			printf("Please insert image name\n");
-//			scanf("%s[^\n]", file_name);/*stores file name in array image*/
-//            *imageHandler = readImage(file_name);
-            *imageHandler = readImage("test.bmp");
+			scanf("%s[^\n]", file_name);/*stores file name in array image*/
+            imageHandler = readImage(file_name);
 //			*createImageBuffer(*imageHandler)
 			
 		}

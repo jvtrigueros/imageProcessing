@@ -35,4 +35,20 @@ FILE *readImage(char * filename);
 // ============================================================================
 int *createImageBuffer(FILE *image);
 
+
+// ===  FUNCTION  =============================================================
+//         Name:  readBMPHeader()
+//  Description:  Reads the header info of the BMP, which constitutes to the 
+//                first 54 bytes of the program. It returns 1 if everything 
+//                went well 0 otherwise.
+// ============================================================================
+int readBMPHeader(FILE *image, char *headerBuffer);
+
+// ===  FUNCTION  =============================================================
+//         Name:  displayBMPHeader
+//  Description:  This will display the header information that was gotten by 
+//                using readBMPHeader.
+// ============================================================================
+void displayBMPHeader ( int *headerBuffer );
+
 #endif /* IMAGEIO_H */

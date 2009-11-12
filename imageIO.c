@@ -29,7 +29,6 @@
 // ============================================================================
 FILE *readImage(char *filename)
 {
-    printf("The size of the str is:%d\n",strlen(filename));
     FILE *fp = fopen(filename,"rb");
 
     // Test to see if the image was read properly
@@ -55,7 +54,7 @@ int *createImageBuffer(FILE *image)
 
     if( (int)n != 54)
     {
-        fputs("The file was not read properly\n", stderr);
+        fputs("createImageBuffer: The file was not read properly\n", stderr);
         exit(2);
     }
 
@@ -63,3 +62,45 @@ int *createImageBuffer(FILE *image)
     //TODO: This needs to be fixed it does not return anything good 
     return buff;
 }
+
+// ===  FUNCTION  =============================================================
+//         Name:  readBMPHeader()
+//  Description:  Reads the header info of the BMP, which constitutes to the 
+//                first 54 bytes of the program. It returns 1 if everything 
+//                went well 0 otherwise.
+//                Since we are passing the buffer by reference, any changes 
+//                done here will be reflected once we return to the calling 
+//                function.
+// ============================================================================
+int readBMPHeader(FILE *image, char *headerBuffer)
+{
+    // This variable below determines the size of the chunks being read. In 
+    // this case they are 1 byte.
+    // const int ELEMENTSIZE = 1;r
+
+    size_t check = fread(headerBuffer, sizeof(headerBuffer[0]),sizeof(headerBuffer), image);
+	
+    // Whatever we read must be the same size of the buffer, otherwise we 
+    // missed something and we're facked. 
+    if ( (int)check != sizeof(headerBuffer) )
+    {
+       fputs("The file was not read properly\n", stderr);
+       return 0; 
+    }
+
+    return 1;
+}        // -----  end of function readBMPHeader  -----
+
+
+// ===  FUNCTION  =============================================================
+//         Name:  displayBMPHeader
+//  Description:  This will display the header information that was gotten by 
+//                using readBMPHeader.
+// ============================================================================
+void displayBMPHeader ( char *headerBuffer )
+{
+    int i = 0;
+    for(; i < 54 ; i++)
+        printf("%d: %c %x\n",i,headerBuffer[i], headerBuffer[i]);
+//        printf("File type:%c%c\n",headerBuffer[1],headerBuffer[2]);
+}        // -----  end of function displayBMPHeader  -----
