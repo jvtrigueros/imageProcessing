@@ -1,1 +1,0 @@
-imageIO.o: imageIO.c
