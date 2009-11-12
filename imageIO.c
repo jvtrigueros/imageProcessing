@@ -106,7 +106,6 @@ void displayBMPHeader ( char *headerBuffer, int size )
 }        // -----  end of function displayBMPHeader  -----
 
 
-
 // ===  FUNCTION  =============================================================
 //         Name:  extractBMPHeaderInfo
 //  Description:  This will extract header information and for now it'll just 
@@ -144,6 +143,57 @@ void extractBMPHeaderInfo ( char * headerBuffer, int headerSize /* future argume
             headerBuffer[location + 3]);
     location +=4;
     
+    // Displays byte remaining after this point   
+    printf("Bytes Remaining: %x %x %x %x\n",
+            headerBuffer[location],headerBuffer[location + 1],
+            headerBuffer[location + 2],
+            headerBuffer[location + 3]);
+    location +=4;
+
+    // Width in pixels
+    printf("Width: %x %x %x %x\n",
+            headerBuffer[location],headerBuffer[location + 1],
+            headerBuffer[location + 2],
+            headerBuffer[location + 3]);
+    location +=4;
     
+    // Height in pixels
+    printf("Height: %x %x %x %x\n",
+            headerBuffer[location],headerBuffer[location + 1],
+            headerBuffer[location + 2],
+            headerBuffer[location + 3]);
+    location +=4;
+
+    // We can ignore the next 12 bytes so we just add 12 to the location.
+    //----------------------------------------------------------------------
+    //  This is what the 12 bytes contain:
+    //  2: Number of color planes being used.
+    //  2: The number of bits/pixel.
+    //  4: BI_RGB, No compression used
+    //  4: The size of the raw BMP data (after this header)
+    //----------------------------------------------------------------------
+    location += 4*3;
+
+    // Horizontal resolution in pixels/meter
+    printf("Width resolution: %x %x %x %x\n",
+            headerBuffer[location],headerBuffer[location + 1],
+            headerBuffer[location + 2],
+            headerBuffer[location + 3]);
+    location +=4;
+    
+    // Vertical resolution in pixels/meter
+    printf("Vertical resolution: %x %x %x %x\n",
+            headerBuffer[location],headerBuffer[location + 1],
+            headerBuffer[location + 2],
+            headerBuffer[location + 3]);
+    location +=4;
+
+    // We can ignore the next 8 bytes so we just add 8 to the location.
+    //----------------------------------------------------------------------
+    //  This is what the 8 bytes contain:
+    //  4: Number of colors in the palette
+    //  4: Means all colors are important
+    //----------------------------------------------------------------------
+    location += 4*2;
 
 }        // -----  end of function extractBMPHeaderInfo  -----
