@@ -15,50 +15,27 @@ make -f make_test.mk
 int main()/*starts main method*/
 {	
     // Global variables
-    const int SIZEOFBMPHEADER = 54;
     int stringLength = 32;
 
     // The string info containing the filename
-    char* filename = (char*)malloc(stringLength * sizeof(char));
+    char* filename = malloc(stringLength);
     strcpy(filename,"GL.bmp");
 
     // This is creates the file handle for the image
-    FILE *imageHandler;
-    imageHandler = readImage(filename); 
+    FILE *imageHandler = readImage(filename); 
 
-    // Checks if the imageHandler has something
-    if( imageHandler == NULL ) 
-    {
-        printf("Fail\n");
-    }
+    // Reads the whole BMP
+    unsigned char* fileBuffer = createImageBuffer(imageHandler) ;
 
-    // Get HeaderInfo
-    // Create buffer for header info
-    unsigned char* header;
-    header = (unsigned char*)malloc(SIZEOFBMPHEADER);
+    // Copiest the BMP Header info into this buffer
+    unsigned char* headerBuffer = readBMPHeader(fileBuffer);
 
-    if ( readBMPHeader( imageHandler, header, SIZEOFBMPHEADER ) )
-    {
-        printf("Header read successfully.\n");
-    }
-    else
-        printf("Fail SOB!!!\n");
+    // Prints out Header information, can be easily modified to get the 
+    // Data into a struct.
+    extractBMPHeaderInfo(headerBuffer);
 
-
-    //----------------------------------------------------------------------
-    //  This is part of the concatenation test
-    //----------------------------------------------------------------------
-    unsigned char temp[] = { header[2],header[3],header[4],header[5] };
-    concatenateBits(temp , 4);
-
-    extractBMPHeaderInfo(header, SIZEOFBMPHEADER);
-    
-    
-//    printf("%x %x %x %x\n",header[2],header[3],header[4],header[5]);
-
-//    displayBMPHeader(header, SIZEOFBMPHEADER);
-
+    // Free Allocated Memory
     free(filename);
-    free(header);
+    free(fileBuffer);
 	return 0;
 }

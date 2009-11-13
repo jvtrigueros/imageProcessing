@@ -60,50 +60,52 @@ FILE *readImage(char *filename)
 //  Description:  This will create an image buffer and return an array with all
 //                that data.
 // ============================================================================
-int *createImageBuffer(FILE *image)
+unsigned char *createImageBuffer(FILE *image)
 {
-    // Create space for header
-    char buff[54];
-    size_t n = fread( buff, sizeof(buff[0]), sizeof(buff),image);
+    // Local Vars
+    long fileSize;
+    unsigned char* imageBuffer;
+    size_t check;
 
-    if( (int)n != 54)
+    // Obtain the file size
+    fseek( image, 0, SEEK_END);
+    fileSize = ftell(image);
+    rewind(image);
+    
+    // Create space for header
+    imageBuffer = malloc(fileSize);
+    check = fread( imageBuffer, sizeof(imageBuffer[0]), fileSize,image);
+
+    // If what we read is not the same size fileSize then something is wrong
+    if( (int)check != (int)fileSize)
     {
         fputs("createImageBuffer: The file was not read properly\n", stderr);
         exit(2);
     }
 
-    printf("%c %c\n",buff[0],buff[1]);
-    //TODO: This needs to be fixed it does not return anything good 
-    int *temp = malloc(sizeof(int)*1);
-    return temp;
+    return imageBuffer;
 }
 
 // ===  FUNCTION  =============================================================
-//         Name:  readBMPHeader()
+//         Name:  readBMP()
 //  Description:  Reads the header info of the BMP, which constitutes to the 
-//                first 54 bytes of the program. It returns 1 if everything 
-//                went well 0 otherwise.
-//                Since we are passing the buffer by reference, any changes 
-//                done here will be reflected once we return to the calling 
-//                function.
+//                first 54 bytes of the program. 
+//                This returns an array with the header data.
 // ============================================================================
-int readBMPHeader(FILE *image, unsigned char *headerBuffer, int sizeOfHeader)
+unsigned char *readBMPHeader(unsigned char *fileBuffer)
 {
-    // This variable below determines the size of the chunks being read. In 
-    // this case they are 1 byte.
-    const int ELEMENTSIZE = 1;
+    const int SIZEOFHEADER = 54;
 
-    size_t check = fread(headerBuffer, ELEMENTSIZE ,sizeOfHeader, image);
-	
-    // Whatever we read must be the same size of the buffer, otherwise we 
-    // missed something and we're facked. 
-    if ( (int)check != sizeOfHeader )
+    // Create headerBuffer to return
+    unsigned char *headerBuffer = malloc(SIZEOFHEADER); 
+
+    int i = 0;
+    for(; i < SIZEOFHEADER; i++)
     {
-       fputs("readBMPHeader:The file was not read properly\n", stderr);
-       return 0; 
+        headerBuffer[i] = fileBuffer[i];
     }
 
-    return 1;
+    return headerBuffer;
 }        // -----  end of function readBMPHeader  -----
 
 
@@ -128,7 +130,7 @@ void displayBMPHeader (unsigned char *headerBuffer, int size )
 //                print it out, but the plan is that this info should be put
 //                into a struct. 11/11/2009 11:54:23 PM
 // ============================================================================
-void extractBMPHeaderInfo ( unsigned char * headerBuffer, int headerSize /* future arguments: struct reference */ )
+void extractBMPHeaderInfo ( unsigned char * headerBuffer/* future arguments: struct reference */ )
 {
     // We use this variable to determine the size of the bits we want to shift
     // by, in this case it is a WORD or 4 bits.

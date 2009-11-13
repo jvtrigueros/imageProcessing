@@ -27,14 +27,12 @@
 // ============================================================================
 FILE *readImage(char * filename);
 
-
 // ===  FUNCTION  =============================================================
 //         Name:  createImageBuffer(FILE*)
 //  Description:  This will create an image buffer and return an array with all
 //                that data.
 // ============================================================================
-int *createImageBuffer(FILE *image);
-
+unsigned char *createImageBuffer(FILE *image);
 
 // ===  FUNCTION  =============================================================
 //         Name:  readBMPHeader()
@@ -42,7 +40,7 @@ int *createImageBuffer(FILE *image);
 //                first 54 bytes of the program. It returns 1 if everything 
 //                went well 0 otherwise.
 // ============================================================================
-int readBMPHeader(FILE *image, unsigned char *headerBuffer, int sizeOfHeader);
+unsigned char *readBMPHeader(unsigned char *fileBuffer);
 
 // ===  FUNCTION  =============================================================
 //         Name:  displayBMPHeader
@@ -57,7 +55,7 @@ void displayBMPHeader (unsigned char *headerBuffer, int size );
 //                print it out, but the plan is that this info should be put
 //                into a struct. 11/11/2009 11:54:23 PM
 // ============================================================================
-void extractBMPHeaderInfo ( unsigned char * headerBuffer, int headerSize );
+void extractBMPHeaderInfo ( unsigned char * headerBuffer);
 
 // ===  FUNCTION  =============================================================
 //         Name:  concatenateBits()

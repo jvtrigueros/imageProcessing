@@ -1,0 +1,26 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+HEADERFUNCTIONS_H	headerFunctions.h	19;"	d
+IMAGEIO_H	imageIO.h	19;"	d
+alloc_2d_array	headerFunctions.c	/^byte **alloc_2d_array(int width, int height)$/;"	f
+arrayInit	imageIO.c	/^void arrayInit ( unsigned char * header, unsigned char *section, int currentLoc, int numberOfBytesToRead )$/;"	f
+blue	headerFunctions.h	/^    byte **blue;$/;"	m	struct:__anon1
+bmp_image	headerFunctions.h	/^}bmp_image;$/;"	t	typeref:struct:__anon1
+byte	headerFunctions.h	/^typedef unsigned char byte;$/;"	t
+concatenateBits	imageIO.c	/^unsigned int concatenateBits (unsigned char* bytes, int numberOfBytes)$/;"	f
+createImageBuffer	imageIO.c	/^unsigned char *createImageBuffer(FILE *image)$/;"	f
+displayBMPHeader	imageIO.c	/^void displayBMPHeader (unsigned char *headerBuffer, int size )$/;"	f
+extractBMPHeaderInfo	imageIO.c	/^void extractBMPHeaderInfo ( unsigned char * headerBuffer, int headerSize \/* future arguments: struct reference *\/ )$/;"	f
+green	headerFunctions.h	/^    byte **green;$/;"	m	struct:__anon1
+height	headerFunctions.h	/^    int height;$/;"	m	struct:__anon1
+main	main.c	/^int main()\/*starts main method*\/$/;"	f
+main	test.c	/^int main()\/*starts main method*\/$/;"	f
+readBMPHeader	imageIO.c	/^int readBMPHeader(FILE *image, unsigned char *headerBuffer, int sizeOfHeader)$/;"	f
+readImage	imageIO.c	/^FILE *readImage(char *filename)$/;"	f
+red	headerFunctions.h	/^    byte **red;$/;"	m	struct:__anon1
+test	headerFunctions.c	/^bmp_image test;$/;"	v
+width	headerFunctions.h	/^    int width;$/;"	m	struct:__anon1
