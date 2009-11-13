@@ -4,7 +4,8 @@
 BINARY	=	ImageProcessor
 CFLAGS	=	-g -Wall
 SOURCES =	test.c	\
-			imageIO.c					
+			imageIO.c \
+			headerFunctions.c
 OBJECTS = $(SOURCES:.c=.o)
 $(BINARY): $(OBJECTS)
 	gcc $(OBJECTS) -o $(BINARY)

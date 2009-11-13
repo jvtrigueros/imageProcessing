@@ -42,21 +42,29 @@ int *createImageBuffer(FILE *image);
 //                first 54 bytes of the program. It returns 1 if everything 
 //                went well 0 otherwise.
 // ============================================================================
-int readBMPHeader(FILE *image, char *headerBuffer, int sizeOfHeader);
+int readBMPHeader(FILE *image, unsigned char *headerBuffer, int sizeOfHeader);
 
 // ===  FUNCTION  =============================================================
 //         Name:  displayBMPHeader
 //  Description:  This will display the header information that was gotten by 
 //                using readBMPHeader.
 // ============================================================================
-void displayBMPHeader ( char *headerBuffer, int size );
+void displayBMPHeader (unsigned char *headerBuffer, int size );
 
+// ===  FUNCTION  =============================================================
+//         Name:  extractBMPHeaderInfo
+//  Description:  This will extract header information and for now it'll just 
+//                print it out, but the plan is that this info should be put
+//                into a struct. 11/11/2009 11:54:23 PM
+// ============================================================================
+void extractBMPHeaderInfo ( unsigned char * headerBuffer, int headerSize );
 
 // ===  FUNCTION  =============================================================
 //         Name:  concatenateBits()
 //  Description:  This function will concatenate bits so that we get the actual
 //                number that we are working with.
 // ============================================================================
-unsigned int concatenateBits (char* bytes, int numberOfBytes);
+unsigned int concatenateBits (unsigned char* bytes, int numberOfBytes);
+
 
 #endif /* IMAGEIO_H */

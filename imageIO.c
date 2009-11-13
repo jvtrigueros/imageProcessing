@@ -21,23 +21,12 @@
 #include    <string.h>
 #include    "imageIO.h"
 
-//TODO: make struct here
-//struct temp possibly
-typedef struct
-{
-    int width;
-    int height;
-    char **red;
-    char **green;
-    char **blue;
-}bmp_image;
-   
 
 // ===  FUNCTION  =============================================================
 //         Name:  arrayInit()
 //  Description:  This function will set the value of a given array
 // ============================================================================
-void arrayInit (char * header,char *section, int currentLoc, int numberOfBytesToRead )
+void arrayInit ( unsigned char * header, unsigned char *section, int currentLoc, int numberOfBytesToRead )
 {
     int i = 0;
     for(;i < numberOfBytesToRead; i++)
@@ -85,7 +74,8 @@ int *createImageBuffer(FILE *image)
 
     printf("%c %c\n",buff[0],buff[1]);
     //TODO: This needs to be fixed it does not return anything good 
-    return buff;
+    int *temp = malloc(sizeof(int)*1);
+    return temp;
 }
 
 // ===  FUNCTION  =============================================================
@@ -97,7 +87,7 @@ int *createImageBuffer(FILE *image)
 //                done here will be reflected once we return to the calling 
 //                function.
 // ============================================================================
-int readBMPHeader(FILE *image, char *headerBuffer, int sizeOfHeader)
+int readBMPHeader(FILE *image, unsigned char *headerBuffer, int sizeOfHeader)
 {
     // This variable below determines the size of the chunks being read. In 
     // this case they are 1 byte.
@@ -122,7 +112,7 @@ int readBMPHeader(FILE *image, char *headerBuffer, int sizeOfHeader)
 //  Description:  This will display the header information that was gotten by 
 //                using readBMPHeader.
 // ============================================================================
-void displayBMPHeader ( char *headerBuffer, int size )
+void displayBMPHeader (unsigned char *headerBuffer, int size )
 {
     int i = 0;
     for(; i < size ; i++)
@@ -137,15 +127,14 @@ void displayBMPHeader ( char *headerBuffer, int size )
 //                print it out, but the plan is that this info should be put
 //                into a struct. 11/11/2009 11:54:23 PM
 // ============================================================================
-void extractBMPHeaderInfo ( char * headerBuffer, int headerSize /* future arguments: struct reference */ )
+void extractBMPHeaderInfo ( unsigned char * headerBuffer, int headerSize /* future arguments: struct reference */ )
 {
-    const int HALFWORD = 2;
     const int WORD = 4;
 
     printf("=== Header Info ====\n");
     // This variable will show the location of where we are looking in the array
     int location = 0;
-    char *temp = malloc(WORD);
+    unsigned char *temp = malloc(WORD);
         
 
     // Determines correct BMP type
@@ -159,7 +148,6 @@ void extractBMPHeaderInfo ( char * headerBuffer, int headerSize /* future argume
             headerBuffer[location + 3]);
     arrayInit(headerBuffer,temp,location,WORD);
     printf("File size: %d\n", concatenateBits(temp,WORD));
-
     location +=4; 
 
     // Displays application specific data
@@ -198,6 +186,9 @@ void extractBMPHeaderInfo ( char * headerBuffer, int headerSize /* future argume
             headerBuffer[location + 3]);
     arrayInit(headerBuffer,temp,location,WORD);
     printf("Width: %d\n", concatenateBits(temp,WORD));
+    
+    int width = concatenateBits(temp,WORD);//i made this
+
     location +=4;
     
     // Height in pixels
@@ -207,6 +198,9 @@ void extractBMPHeaderInfo ( char * headerBuffer, int headerSize /* future argume
             headerBuffer[location + 3]);
     arrayInit(headerBuffer,temp,location,WORD);
     printf("Height: %d\n", concatenateBits(temp,WORD));
+
+    int height = concatenateBits(temp,WORD);//i made this
+
     location +=4;
 
     // We can ignore the next 12 bytes so we just add 12 to the location.
@@ -255,7 +249,7 @@ void extractBMPHeaderInfo ( char * headerBuffer, int headerSize /* future argume
 //  Description:  This function will concatenate bits so that we get the actual
 //                number that we are working with.
 // ============================================================================
-unsigned int concatenateBits (char* bytes, int numberOfBytes)
+unsigned int concatenateBits (unsigned char* bytes, int numberOfBytes)
 {
     //TODO: Fix the extra shift.
 

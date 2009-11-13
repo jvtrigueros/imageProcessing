@@ -1,5 +1,5 @@
 /*
-File: main.c
+File: test.c
 Author: Daniel Gonzalez
 Date: 11/13/09
 Descr: gets a full name
@@ -10,6 +10,7 @@ make -f make_test.mk
 #include <string.h>
 #include <stdlib.h>
 #include "imageIO.h"
+#include "headerFunctions.h"
 
 int main()/*starts main method*/
 {	
@@ -17,10 +18,9 @@ int main()/*starts main method*/
     const int SIZEOFBMPHEADER = 54;
     int stringLength = 32;
 
-
     // The string info containing the filename
     char* filename = (char*)malloc(stringLength * sizeof(char));
-    strcpy(filename,"test.bmp");
+    strcpy(filename,"GL.bmp");
 
     // This is creates the file handle for the image
     FILE *imageHandler;
@@ -34,8 +34,8 @@ int main()/*starts main method*/
 
     // Get HeaderInfo
     // Create buffer for header info
-    char* header;
-    header = (char*)malloc(SIZEOFBMPHEADER);
+    unsigned char* header;
+    header = (unsigned char*)malloc(SIZEOFBMPHEADER);
 
     if ( readBMPHeader( imageHandler, header, SIZEOFBMPHEADER ) )
     {
@@ -48,10 +48,11 @@ int main()/*starts main method*/
     //----------------------------------------------------------------------
     //  This is part of the concatenation test
     //----------------------------------------------------------------------
-    char temp[] = { header[2],header[3],header[4],header[5] };
+    unsigned char temp[] = { header[2],header[3],header[4],header[5] };
     concatenateBits(temp , 4);
 
     extractBMPHeaderInfo(header, SIZEOFBMPHEADER);
+    
     
 //    printf("%x %x %x %x\n",header[2],header[3],header[4],header[5]);
 
