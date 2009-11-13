@@ -107,6 +107,7 @@ int readBMPHeader(FILE *image, unsigned char *headerBuffer, int sizeOfHeader)
 }        // -----  end of function readBMPHeader  -----
 
 
+// TODO: Needs to be redefined or thrashed, useless ATM
 // ===  FUNCTION  =============================================================
 //         Name:  displayBMPHeader
 //  Description:  This will display the header information that was gotten by 
@@ -129,6 +130,8 @@ void displayBMPHeader (unsigned char *headerBuffer, int size )
 // ============================================================================
 void extractBMPHeaderInfo ( unsigned char * headerBuffer, int headerSize /* future arguments: struct reference */ )
 {
+    // We use this variable to determine the size of the bits we want to shift
+    // by, in this case it is a WORD or 4 bits.
     const int WORD = 4;
 
     printf("=== Header Info ====\n");
