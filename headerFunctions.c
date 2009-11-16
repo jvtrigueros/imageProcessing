@@ -18,8 +18,24 @@
 
 #include    <stdio.h>
 #include    <stdlib.h>
+#include    "imageIO.h"
 #include    "headerFunctions.h"
 
+
+// ===  FUNCTION  =============================================================
+//         Name:  arrayInit()
+//  Description:  This function will set the value of a given array,
+//                this function is not in the header file because it should not
+//                be called by anybody else.
+// ============================================================================
+void arrayInit ( unsigned char * header, unsigned char *section, int currentLoc, int numberOfBytesToRead )
+{
+    int i = 0;
+    for(;i < numberOfBytesToRead; i++)
+    {
+        section[i] = header[currentLoc + i];
+    }
+}        // -----  end of function arrayInit  -----
 
 // ===  FUNCTION  =============================================================
 //         Name:  displayHeaderInfo
@@ -33,38 +49,144 @@ void displayHeaderInfo (headerInfo *info )
     printf("Width: %d\nHeight: %d \n", info->width, info->height);
 }        // -----  end of function displayHeaderInfo  -----
 
+// ===  FUNCTION  =============================================================
+//         Name:  readBMP()
+//  Description:  Reads the header info of the BMP, which constitutes to the 
+//                first 54 bytes of the program. 
+//                This returns an array with the header data.
+// ============================================================================
+unsigned char *readBMPHeader(unsigned char *fileBuffer)
+{
+    const int SIZEOFHEADER = 54;
+
+    // Create headerBuffer to return
+    unsigned char *headerBuffer = malloc(SIZEOFHEADER); 
+
+    int i = 0;
+    for(; i < SIZEOFHEADER; i++)
+    {
+        headerBuffer[i] = fileBuffer[i];
+    }
+
+    return headerBuffer;
+}        // -----  end of function readBMPHeader  -----
+
+// ===  FUNCTION  =============================================================
+//         Name:  extractBMPHeaderInfo
+//  Description:  This will extract header information and for now it'll just 
+//                print it out, but the plan is that this info should be put
+//                into a struct. 11/11/2009 11:54:23 PM
+// ============================================================================
+void extractBMPHeaderInfo ( unsigned char * headerBuffer, headerInfo *info )
+{
+    // We use this variable to determine the size of the bits we want to shift
+    // by, in this case it is a WORD or 4 bits.
+    const int WORD = 4;
+
+    printf("=== Header Info ====\n");
+    // This variable will show the location of where we are looking in the array
+    int location = 0;
+    unsigned char *temp = malloc(WORD);
+        
+
+    // Determines correct BMP type
+    info->type[0] = headerBuffer[location];
+    info->type[1] = headerBuffer[location + 1];
+    printf("File type: %c%c\n", headerBuffer[location], headerBuffer[location + 1]);
+    location += 2;
+
+    // Displays size of BMP in bytes
+    printf("File size: %x %x %x %x\n",
+            headerBuffer[location],headerBuffer[location + 1],
+            headerBuffer[location + 2],
+            headerBuffer[location + 3]);
+    arrayInit(headerBuffer,temp,location,WORD);
+    info->sizeOf = concatenateBits(temp,WORD);
+    printf("File size: %d\n", info->sizeOf);
+    location +=4; 
+
+    // Displays application specific data
+    printf("Application Specific: %x %x %x %x\n",
+            headerBuffer[location],headerBuffer[location + 1],
+            headerBuffer[location + 2],
+            headerBuffer[location + 3]);
+    location +=4;
 
 
-//professa! code
-//byte **alloc_2d_array(int width, int height)
-//{
-//    int i;
-//    byte **a = (byte **)malloc(width*sizeof(byte *));
-//
-//    for(i = 0;i<width;i++)
-//        a[i] = (byte *)malloc(height * sizeof(byte *));
-//    return a;
-//}
-//end more info on code is at the bottom 
+    // Displays header offset
+    printf("Header Offset: %x %x %x %x\n",
+            headerBuffer[location],headerBuffer[location + 1],
+            headerBuffer[location + 2],
+            headerBuffer[location + 3]);
+    arrayInit(headerBuffer,temp,location,WORD);
+    printf("Header Offset: %d\n", concatenateBits(temp,WORD));
+    location +=4;
+    
+    // Displays byte remaining after this point   
+    printf("Bytes Remaining: %x %x %x %x\n",
+            headerBuffer[location],headerBuffer[location + 1],
+            headerBuffer[location + 2],
+            headerBuffer[location + 3]);
+    arrayInit(headerBuffer,temp,location,WORD);
+    printf("Bytes Remaining: %d\n", concatenateBits(temp,WORD));
+    location +=4;
 
+    // Width in pixels
+    printf("Width: %x %x %x %x\n",
+            headerBuffer[location],headerBuffer[location + 1],
+            headerBuffer[location + 2],
+            headerBuffer[location + 3]);
+    arrayInit(headerBuffer,temp,location,WORD);
+    info->width = concatenateBits(temp,WORD);
+    printf("Width: %d\n", info->width);
+    location +=4;
+    
+    // Height in pixels
+    printf("Height: %x %x %x %x\n",
+            headerBuffer[location],headerBuffer[location + 1],
+            headerBuffer[location + 2],
+            headerBuffer[location + 3]);
+    arrayInit(headerBuffer,temp,location,WORD);
+    info->height = concatenateBits(temp,WORD);
+    printf("Height: %d\n", info->height);
+    location +=4;
 
-/*
-My bug was that I defined my 2d arrays of colors as "char" rather than as "unsigned char". The unsigned char data type will store integers in unsigned format and the char values will be in the range 0-255. Exactly what I need. So, here's how I fixed this in my code.
+    // We can ignore the next 12 bytes so we just add 12 to the location.
+    //----------------------------------------------------------------------
+    //  This is what the 12 bytes contain:
+    //  2: Number of color planes being used.
+    //  2: The number of bits/pixel.
+    //  4: BI_RGB, No compression used
+    //  4: The size of the raw BMP data (after this header)
+    //----------------------------------------------------------------------
+    location += 4*3;
 
-typedef unsigned char byte;
+    // Horizontal resolution in pixels/meter
+    printf("Width resolution: %x %x %x %x\n",
+            headerBuffer[location],headerBuffer[location + 1],
+            headerBuffer[location + 2],
+            headerBuffer[location + 3]);
+    arrayInit(headerBuffer,temp,location,WORD);
+    printf("Width resolution: %d\n", concatenateBits(temp,WORD));
+    location +=4;
+    
+    // Vertical resolution in pixels/meter 
+    printf("Vertical resolution: %x %x %x %x\n",
+            headerBuffer[location],headerBuffer[location + 1],
+            headerBuffer[location + 2],
+            headerBuffer[location + 3]);
+    arrayInit(headerBuffer,temp,location,WORD);
+    printf("Vertical resolution: %d\n", concatenateBits(temp,WORD));
+    location +=4;
 
-typedef struct {
-int width;
-int height;
-byte **blue;
-byte **green;
-byte **red;
-} bmp_image;
+    // We can ignore the next 8 bytes so we just add 8 to the location.
+    //----------------------------------------------------------------------
+    //  This is what the 8 bytes contain:
+    //  4: Number of colors in the palette
+    //  4: Means all colors are important
+    //----------------------------------------------------------------------
+    location += 4*2;
 
-byte **alloc_2d_array(int rows, int cols) {
-int i;
-byte **a = (byte **)malloc(rows * sizeof(byte *));
-for (i = 0; i < rows; i++) a[i] = (byte *)malloc(cols * sizeof(byte));
-return a;
-}
-*/
+    // Release memory allocated for char* temp
+    free(temp);
+}        // -----  end of function extractBMPHeaderInfo  -----
