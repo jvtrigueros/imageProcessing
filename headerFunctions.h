@@ -25,7 +25,29 @@
 typedef unsigned char byte;
 
 
+// ===  STRUCT    =============================================================
+//         Name:  headerInfo
+//  Description:  This contains only the header information we need about the 
+//                BMP image we are currently reading.
+// ============================================================================
+typedef struct
+{
+    char type[2];       // Stores the first 2 bytes to see if the image is BMP
+    int sizeOf;         // Stores the size of the image in bytes (incl header)
+    int width;
+    int height;
+}headerInfo;
+
+
 // ===  FUNCTION  =============================================================
+//         Name:  displayHeaderInfo
+//  Description:  Just prints out the header info to check if it aquired the 
+//                right data.
+// ============================================================================
+void displayHeaderInfo (headerInfo *info );
+
+
+// ===  STRUCT    =============================================================
 //         Name:  bmp_image
 //  Description:  This handle the pixels of the actual image
 // ============================================================================

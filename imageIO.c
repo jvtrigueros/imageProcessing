@@ -20,6 +20,7 @@
 #include    <stdlib.h>
 #include    <string.h>
 #include    "imageIO.h"
+#include    "headerFunctions.h"
 
 
 // ===  FUNCTION  =============================================================
@@ -109,28 +110,13 @@ unsigned char *readBMPHeader(unsigned char *fileBuffer)
 }        // -----  end of function readBMPHeader  -----
 
 
-// TODO: Needs to be redefined or thrashed, useless ATM
-// ===  FUNCTION  =============================================================
-//         Name:  displayBMPHeader
-//  Description:  This will display the header information that was gotten by 
-//                using readBMPHeader.
-// ============================================================================
-void displayBMPHeader (unsigned char *headerBuffer, int size )
-{
-    int i = 0;
-    for(; i < size ; i++)
-        printf("%d: %c %x\n",i,headerBuffer[i], headerBuffer[i]);
-//        printf("File type:%c%c\n",headerBuffer[1],headerBuffer[2]);
-}        // -----  end of function displayBMPHeader  -----
-
-
 // ===  FUNCTION  =============================================================
 //         Name:  extractBMPHeaderInfo
 //  Description:  This will extract header information and for now it'll just 
 //                print it out, but the plan is that this info should be put
 //                into a struct. 11/11/2009 11:54:23 PM
 // ============================================================================
-void extractBMPHeaderInfo ( unsigned char * headerBuffer/* future arguments: struct reference */ )
+void extractBMPHeaderInfo ( unsigned char * headerBuffer, headerInfo *info )
 {
     // We use this variable to determine the size of the bits we want to shift
     // by, in this case it is a WORD or 4 bits.
@@ -143,6 +129,8 @@ void extractBMPHeaderInfo ( unsigned char * headerBuffer/* future arguments: str
         
 
     // Determines correct BMP type
+    info->type[0] = headerBuffer[location];
+    info->type[1] = headerBuffer[location + 1];
     printf("File type: %c%c\n", headerBuffer[location], headerBuffer[location + 1]);
     location += 2;
 
@@ -152,7 +140,8 @@ void extractBMPHeaderInfo ( unsigned char * headerBuffer/* future arguments: str
             headerBuffer[location + 2],
             headerBuffer[location + 3]);
     arrayInit(headerBuffer,temp,location,WORD);
-    printf("File size: %d\n", concatenateBits(temp,WORD));
+    info->sizeOf = concatenateBits(temp,WORD);
+    printf("File size: %d\n", info->sizeOf);
     location +=4; 
 
     // Displays application specific data
@@ -161,9 +150,6 @@ void extractBMPHeaderInfo ( unsigned char * headerBuffer/* future arguments: str
             headerBuffer[location + 2],
             headerBuffer[location + 3]);
     location +=4;
-
-    //test	i think it works check to make sure its ok
-    //end
 
 
     // Displays header offset
@@ -190,10 +176,8 @@ void extractBMPHeaderInfo ( unsigned char * headerBuffer/* future arguments: str
             headerBuffer[location + 2],
             headerBuffer[location + 3]);
     arrayInit(headerBuffer,temp,location,WORD);
-    printf("Width: %d\n", concatenateBits(temp,WORD));
-    
-    int width = concatenateBits(temp,WORD);//i made this
-
+    info->width = concatenateBits(temp,WORD);
+    printf("Width: %d\n", info->width);
     location +=4;
     
     // Height in pixels
@@ -202,10 +186,8 @@ void extractBMPHeaderInfo ( unsigned char * headerBuffer/* future arguments: str
             headerBuffer[location + 2],
             headerBuffer[location + 3]);
     arrayInit(headerBuffer,temp,location,WORD);
-    printf("Height: %d\n", concatenateBits(temp,WORD));
-
-    int height = concatenateBits(temp,WORD);//i made this
-
+    info->height = concatenateBits(temp,WORD);
+    printf("Height: %d\n", info->height);
     location +=4;
 
     // We can ignore the next 12 bytes so we just add 12 to the location.
@@ -284,3 +266,18 @@ unsigned int concatenateBits (unsigned char* bytes, int numberOfBytes)
     
     return bitBuffer;
 }        // -----  end of function concatenateBits  -----
+
+
+// TODO: Needs to be redefined or thrashed, useless ATM
+// ===  FUNCTION  =============================================================
+//         Name:  displayBMPHeader
+//  Description:  This will display the header information that was gotten by 
+//                using readBMPHeader.
+// ============================================================================
+void displayBMPHeader (unsigned char *headerBuffer, int size )
+{
+    int i = 0;
+    for(; i < size ; i++)
+        printf("%d: %c %x\n",i,headerBuffer[i], headerBuffer[i]);
+//        printf("File type:%c%c\n",headerBuffer[1],headerBuffer[2]);
+}        // -----  end of function displayBMPHeader  -----

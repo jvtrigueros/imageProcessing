@@ -1,10 +1,19 @@
-/*
-File: headerFunctions.c
-Author: Daniel Gonzalez
-Date: 11/13/09
-Descr: gets a full name
-make -f make_test.mk 
-*/
+// ============================================================================
+// 
+//       Filename:  headerFunctions.c
+// 
+//    Description:  Contains all the functions that deal with header 
+//                  manipulation
+// 
+//        Version:  1.0
+//        Created:  11/12/2009 08:38:20 PM
+//       Revision:  none
+//       Compiler:  g++
+// 
+//         Author:  Jose V. Trigueros (), j.v.trigueros@gmail.com
+//        Company:  
+// 
+// ============================================================================
 
 
 #include    <stdio.h>
@@ -12,18 +21,30 @@ make -f make_test.mk
 #include    "headerFunctions.h"
 
 
-bmp_image test;
+// ===  FUNCTION  =============================================================
+//         Name:  displayHeaderInfo
+//  Description:  Just prints out the header info to check if it aquired the 
+//                right data.
+// ============================================================================
+void displayHeaderInfo (headerInfo *info )
+{
+    printf("Type: %c%c\n", info->type[0],info->type[1]);
+    printf("File size: %d\n", info->sizeOf);
+    printf("Width: %d\nHeight: %d \n", info->width, info->height);
+}        // -----  end of function displayHeaderInfo  -----
+
+
 
 //professa! code
-byte **alloc_2d_array(int width, int height)
-{
-    int i;
-    byte **a = (byte **)malloc(width*sizeof(byte *));
-
-    for(i = 0;i<width;i++)
-        a[i] = (byte *)malloc(height * sizeof(byte *));
-    return a;
-}
+//byte **alloc_2d_array(int width, int height)
+//{
+//    int i;
+//    byte **a = (byte **)malloc(width*sizeof(byte *));
+//
+//    for(i = 0;i<width;i++)
+//        a[i] = (byte *)malloc(height * sizeof(byte *));
+//    return a;
+//}
 //end more info on code is at the bottom 
 
 

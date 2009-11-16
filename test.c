@@ -19,7 +19,7 @@ int main()/*starts main method*/
 
     // The string info containing the filename
     char* filename = malloc(stringLength);
-    strcpy(filename,"GL.bmp");
+    strcpy(filename,"test.bmp");
 
     // This is creates the file handle for the image
     FILE *imageHandler = readImage(filename); 
@@ -32,9 +32,14 @@ int main()/*starts main method*/
 
     // Prints out Header information, can be easily modified to get the 
     // Data into a struct.
-    extractBMPHeaderInfo(headerBuffer);
+    headerInfo info;
+    extractBMPHeaderInfo(headerBuffer, &info);
+
+    puts("\n");
+    displayHeaderInfo( &info );
 
     // Free Allocated Memory
+    fclose(imageHandler);
     free(filename);
     free(fileBuffer);
 	return 0;

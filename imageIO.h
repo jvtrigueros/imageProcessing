@@ -15,6 +15,9 @@
 // 
 // ============================================================================
 
+
+#include    "headerFunctions.h"
+
 #ifndef IMAGEIO_H
 #define IMAGEIO_H
 
@@ -55,7 +58,7 @@ void displayBMPHeader (unsigned char *headerBuffer, int size );
 //                print it out, but the plan is that this info should be put
 //                into a struct. 11/11/2009 11:54:23 PM
 // ============================================================================
-void extractBMPHeaderInfo ( unsigned char * headerBuffer);
+void extractBMPHeaderInfo ( unsigned char * headerBuffer, headerInfo *info);
 
 // ===  FUNCTION  =============================================================
 //         Name:  concatenateBits()

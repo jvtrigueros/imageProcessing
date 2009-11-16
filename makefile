@@ -2,9 +2,9 @@
 #File: makefile
 
 BINARY	=	ImageProcessor
-CFLAGS	=	-g	
-SOURCES =	main.c	\
-			imageIO.c					
+CFLAGS	=	-g -Wall
+SOURCES =	test.c 	headerFunctions.c imageIO.c					
+			#main.c	
 OBJECTS = $(SOURCES:.c=.o)
 $(BINARY): $(OBJECTS)
 	gcc $(OBJECTS) -o $(BINARY)
