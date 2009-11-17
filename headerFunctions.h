@@ -49,8 +49,8 @@ void displayHeaderInfo (headerInfo *info );
 // ===  FUNCTION  =============================================================
 //         Name:  readBMPHeader()
 //  Description:  Reads the header info of the BMP, which constitutes to the 
-//                first 54 bytes of the program. It returns 1 if everything 
-//                went well 0 otherwise.
+//                first 54 bytes of the program. It returns a char buffer with
+//                the header bytes.
 // ============================================================================
 unsigned char *readBMPHeader(unsigned char *fileBuffer);
 

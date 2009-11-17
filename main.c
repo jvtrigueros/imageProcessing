@@ -16,6 +16,8 @@
 
 #include    <stdio.h>
 #include    <stdlib.h>
+#include    <string.h>
+#include    "imageIO.h"
 
 // ===  FUNCTION  =============================================================
 //         Name:  printMenu
@@ -34,11 +36,32 @@ void printMenu ()
     printf("\nChoice? ");
 }        // -----  end of function printMenu  -----
 
+// ===  FUNCTION  =============================================================
+//         Name:  isBMP()
+//  Description:  TODO: Move elsewhere
+//                Determines if file is a BMP, if not it quits the program.
+// ============================================================================
+void isBMP (char *type )
+{
+    if( strncmp(type, "BM",2) != 0 )
+    {
+        // K.O.
+        printf("%s\n",type);
+        puts("FATAL ERROR! Input file is not BMP! Dx\n");
+        exit(3);
+    }
+}        // -----  end of function isBMP  -----
+
 int main()
 {
     // Vars
     int choice = 0;
     int loop = 1;
+    int bmpRead = 0;
+    int lengthOfFilename = 32;
+    char * filename = malloc(lengthOfFilename);
+    headerInfo info;
+
 
     puts("\nBMP Image Processing Program");
     puts("----------------------------");
@@ -52,29 +75,99 @@ int main()
         switch (choice) 
         {
             case 1:	
+                // Maybe have something for when a bmp has already been read
+                bmpRead = 1;
+
+                // Get filename
+                printf("\nPlease enter the name of the BMP: ");
+                scanf("%s",filename);
+
+                // Extract information from BMP
+                unsigned char* imageBuffer = createImageBuffer(filename);
+                unsigned char* headerBuffer = readBMPHeader(imageBuffer);
+
+                extractBMPHeaderInfo(headerBuffer, &info);
+
+                // Check if image is BMP
+                isBMP(info.type);
+                
+                // Now we can continue to create the pixel matrix
+                pixelData **pixels = createImageMatrix(imageBuffer, info.width, info.height);
+
+                // If this is BMP Continue
+                printf("%s was read successfully!\n\n", filename);
+
                 break;
 
             case 2:	
+                if ( !bmpRead ) 
+                {
+                    puts("Please select option 1 first.\n"); 
+                }
+                else 
+                {
+                    // Now we will write the image out.
+                    printf("\nEnter output file name: ");
+                    scanf("%s",filename);
+                    writeBMP(pixels, headerBuffer, info, filename);
+                    printf("%s was written successfully!!\n\n", filename);
+                }
                 break;
 
             case 3:	
+                if ( !bmpRead ) 
+                {
+                    puts("Please select option 1 first.\n"); 
+                }
+                else 
+                {
+                    double factor;
+                    printf("\nChange the intensity by a factor of: ");
+                    scanf("%lf",&factor);
+                    changeIntensity(pixels, factor, info.width,info.height);
+                }
                 break;
 
             case 4:	
+                if ( !bmpRead ) 
+                {
+                    puts("Please select option 1 first.\n"); 
+                }
+                else 
+                {
+//                    <+ELSE PART+>
+                }
                 break;
 
             case 5:	
+                if ( !bmpRead ) 
+                {
+                    puts("Please select option 1 first.\n"); 
+                }
+                else 
+                {
+//                    <+ELSE PART+>
+                }
                 break;
 
             case 6:	
+                if ( !bmpRead ) 
+                {
+                    puts("Please select option 1 first.\n"); 
+                }
+                else 
+                {
+//                    <+ELSE PART+>
+                }
                 break;
 
             case 7:	
                 loop = 0;
+                puts("\nGood Bye!!!\n");
                 break;
 
             default:	
-                puts("\nInvalid Choice, Please Try Again :D\n");
+                puts("\nInvalid Choice, Please Try Again :(\n");
                 break;
         }				// -----  end switch  -----
 

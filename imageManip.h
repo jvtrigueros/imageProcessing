@@ -43,4 +43,20 @@ pixelData **createImageMatrix ( unsigned char *imageData, int width, int height)
 // ============================================================================
 void displayMatrix ( pixelData **pixels, int width, int height );
 
+
+// ===  FUNCTION  =============================================================
+//         Name:  changeIntensity()
+//  Description:  Change the intensity of the picture by some factor provided
+//                by the user.
+// ============================================================================
+void changeIntensity (pixelData **pixels, double factor, int width, int height );
+
+
+// ===  FUNCTION  =============================================================
+//         Name:  freeImageMatrix()
+//  Description:  This function will simply de-allocate all the data allocated
+//                for the image matrix.
+// ============================================================================
+void freeImageMatrix ( pixelData **pixels );
+
 #endif /* IMAGEMANIP_H  */

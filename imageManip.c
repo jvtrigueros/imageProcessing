@@ -92,3 +92,25 @@ void displayMatrix ( pixelData **pixels, int width, int height )
         puts("");
     }
 }        // -----  end of function displayMatrix  -----
+
+
+// ===  FUNCTION  =============================================================
+//         Name:  changeIntensity()
+//  Description:  Change the intensity of the picture by some factor provided
+//                by the user.
+// ============================================================================
+void changeIntensity (pixelData **pixels, double factor, int width, int height )
+{
+    int i,j;
+    //Iterate through columns
+    
+    for ( i = 0 ; i < height ; i++ ) 
+    {
+        for ( j = 0; j < width; j++ )
+        {
+            pixels[i][j].Red = (int)( ( (pixels[i][j].Red) * factor) + pixels[i][j].Red ) % 255;
+            pixels[i][j].Green = (int)( ( (pixels[i][j].Green) * factor) + pixels[i][j].Green ) % 255;
+            pixels[i][j].Blue = (int)( ( (pixels[i][j].Blue) * factor) + pixels[i][j].Blue ) % 255;
+        }
+    }
+}        // -----  end of function changeIntensity  -----

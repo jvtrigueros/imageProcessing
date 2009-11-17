@@ -2,6 +2,5 @@
 *.swp
 *.o
 *.d
-test.bmp
-GL.bmp
+*.bmp
 ImageProcessor
