@@ -20,7 +20,7 @@ int main()/*starts main method*/
 
     // The string info containing the filename
     char* filename = malloc(stringLength);
-    strcpy(filename,"test.bmp");
+    strcpy(filename,"GL.bmp");
 
     // This is creates the file handle for the image
     FILE *imageHandler = readImage(filename); 
@@ -38,20 +38,22 @@ int main()/*starts main method*/
 
     puts("");
     displayHeaderInfo( &info );
-    puts("");
-
-    printf("Test: %x %x %x\n", fileBuffer[54],fileBuffer[55],fileBuffer[56]);
-    printf("Test: %x %x %x\n", fileBuffer[57],fileBuffer[58],fileBuffer[59]);
-    printf("Test: %x %x \n", fileBuffer[60],fileBuffer[61]);
 
     puts("");
     pixelData **pixels = createImageMatrix(fileBuffer,info.width, info.height);
-    printf("Test2: %x %x %x\n", pixels[0][0].Red,pixels[0][0].Green,pixels[0][0].Blue);
-    printf("Test2: %x %x %x\n", pixels[0][1].Red,pixels[0][1].Green,pixels[0][1].Blue);
+    displayMatrix(pixels,info.width, info.height);
+
+    // Writing test
+    unsigned char *completeBMP = writeBMP(pixels, headerBuffer, info);
+    FILE *newFile;
+    newFile = fopen( "output.bmp" , "wb");
+    fwrite(completeBMP, 1, info.sizeOf, newFile);
+    fclose(newFile);
 
     // Free Allocated Memory
     fclose(imageHandler);
     free(filename);
     free(fileBuffer);
+    free(headerBuffer);
 	return 0;
 }

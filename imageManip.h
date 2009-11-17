@@ -37,5 +37,10 @@ typedef struct
 // ============================================================================
 pixelData **createImageMatrix ( unsigned char *imageData, int width, int height);
 
+// ===  FUNCTION  =============================================================
+//         Name:  displayMatrix()
+//  Description:  Displays the data stored in the pixel matrix
+// ============================================================================
+void displayMatrix ( pixelData **pixels, int width, int height );
 
 #endif /* IMAGEMANIP_H  */

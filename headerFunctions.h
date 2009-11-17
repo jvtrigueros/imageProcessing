@@ -69,18 +69,4 @@ void displayBMPHeader (unsigned char *headerBuffer, int size );
 // ============================================================================
 void extractBMPHeaderInfo ( unsigned char * headerBuffer, headerInfo *info);
 
-//TODO: Move this somewhere it does not belong here
-// ===  STRUCT    =============================================================
-//         Name:  bmp_image
-//  Description:  This handle the pixels of the actual image
-// ============================================================================
-typedef struct 
-{
-    int width;
-    int height;
-    byte **red;
-    byte **green;
-    byte **blue;
-}bmp_image;
-
 #endif/*HEADERFUNCTIONS_H */

@@ -16,6 +16,7 @@
 // ============================================================================
 
 #include    "headerFunctions.h"
+#include    "imageManip.h"
 
 #ifndef IMAGEIO_H
 #define IMAGEIO_H
@@ -41,5 +42,12 @@ unsigned char *createImageBuffer(FILE *image);
 //                number that we are working with.
 // ============================================================================
 unsigned int concatenateBits (unsigned char* bytes, int numberOfBytes);
+
+// ===  FUNCTION  =============================================================
+//         Name:  writeBMP
+//  Description:  This function will write the buffer data to a BMP file.
+// ============================================================================
+unsigned char *writeBMP ( pixelData **pixels, unsigned char *header, 
+                headerInfo info);
 
 #endif /* IMAGEIO_H */

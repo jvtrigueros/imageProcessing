@@ -109,3 +109,57 @@ unsigned int concatenateBits (unsigned char* bytes, int numberOfBytes)
     
     return bitBuffer;
 }        // -----  end of function concatenateBits  -----
+
+// ===  FUNCTION  =============================================================
+//         Name:  writeBMP
+//  Description:  This function will write the buffer data to a BMP file.
+// ============================================================================
+unsigned char *writeBMP ( pixelData **pixels, unsigned char *header, 
+                headerInfo info)
+{
+    int const BUFFERSIZE = 54;
+    int i,j,imageLoc;
+
+    imageLoc = BUFFERSIZE;
+
+    unsigned char* bmpBuffer = malloc(info.sizeOf);
+
+    // Copy header information into the first 54 bytes of bmpBuffer
+    for(i = 0; i < BUFFERSIZE ; i++)
+    {
+        bmpBuffer[i] = header[i];
+    }
+
+    // Copy the pixel data to the remaining of the bmpBuffer
+    for( i = 0; i < info.height; i++)
+    {
+        for(j = 0; j <= info.width; j++)
+        {
+            if( j == info.width )
+            {
+                // Add padding here!!!
+                // Determine if padding is needed and how much
+                int padding = info.width % 4;
+                if( padding != 0 )
+                {
+                    //Padding is needed =(
+                    int p;
+                    for(p = 0; p < padding ; p++,imageLoc++)
+                    {
+                        bmpBuffer[imageLoc] = 'T'; // Padding can be anything
+                    }
+                }
+            }
+            else
+            {
+                bmpBuffer[imageLoc    ] = pixels[i][j].Blue;
+                bmpBuffer[imageLoc + 1] = pixels[i][j].Green;
+                bmpBuffer[imageLoc + 2] = pixels[i][j].Red;
+                imageLoc += 3; // Not a magic number, it represents RGB
+            }
+        }
+    }
+
+    // Finally, return the written buffer 
+    return bmpBuffer;
+}        // -----  end of function writeBMP  -----

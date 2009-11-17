@@ -43,16 +43,19 @@ pixelData **createImageMatrix ( unsigned char *imageData, int width, int height 
     // Note that the image will be upside down when read =D
     int imageLoc = startImage;
     int j;
+    // Determine padding
+    int padding = width % 4;
+
     for(i = 0; i < height; i++)
     {
         // Iterate throw the current row of pixels
-        for(j = 0; j <= width; j++,imageLoc += 3)
+        for(j = 0; j <= width; j++)
         {
             // We need an alternate option at the end of the row
             if( j == width)
             {
-                // Add two bytes to skip the padding
-                imageLoc += 2;
+                // Skip the amount determined by padding 
+                imageLoc += padding;
             }
             else
             {
@@ -60,9 +63,32 @@ pixelData **createImageMatrix ( unsigned char *imageData, int width, int height 
                 pixels[i][j].Blue = imageData[imageLoc];
                 pixels[i][j].Green = imageData[imageLoc + 1];
                 pixels[i][j].Red = imageData[imageLoc + 2];
+                imageLoc += 3;      // Not a magic number, it represents RGB
             }
         }
     }
 
     return pixels;
 }        // -----  end of function createImageMatrix  -----
+
+
+// ===  FUNCTION  =============================================================
+//         Name:  displayMatrix()
+//  Description:  Displays the data stored in the pixel matrix
+// ============================================================================
+void displayMatrix ( pixelData **pixels, int width, int height )
+{
+    int i,j;
+
+    for(i=0; i < height; i++)
+    {
+        printf("Row %d\n", i);
+        for(j=0; j < width; j++)
+        {
+            printf("%x ",pixels[i][j].Blue);
+            printf("%x ",pixels[i][j].Green);
+            printf("%x \n",pixels[i][j].Red);
+        }
+        puts("");
+    }
+}        // -----  end of function displayMatrix  -----
