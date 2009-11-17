@@ -69,4 +69,10 @@ void displayBMPHeader (unsigned char *headerBuffer, int size );
 // ============================================================================
 void extractBMPHeaderInfo ( unsigned char * headerBuffer, headerInfo *info);
 
+// ===  FUNCTION  =============================================================
+//         Name:  displayBMPHeaderInfo
+//  Description:  This will display header information and will do nothing more
+// ============================================================================
+void displayBMPHeaderInfo ( unsigned char * headerBuffer);
+
 #endif/*HEADERFUNCTIONS_H */

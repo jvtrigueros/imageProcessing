@@ -76,8 +76,83 @@ unsigned char *readBMPHeader(unsigned char *fileBuffer)
 //  Description:  This will extract header information and for now it'll just 
 //                print it out, but the plan is that this info should be put
 //                into a struct. 11/11/2009 11:54:23 PM
+//                Was stripped of all the printf-ing and only get's the stash 
+//                and exits.
 // ============================================================================
 void extractBMPHeaderInfo ( unsigned char * headerBuffer, headerInfo *info )
+{
+    // We use this variable to determine the size of the bits we want to shift
+    // by, in this case it is a WORD or 4 bits.
+    const int WORD = 4;
+
+    // This variable will show the location of where we are looking in the array
+    int location = 0;
+    unsigned char *temp = malloc(WORD);
+        
+
+    // Determines correct BMP type
+    info->type[0] = headerBuffer[location];
+    info->type[1] = headerBuffer[location + 1];
+    location += 2;
+
+    // Displays size of BMP in bytes
+    arrayInit(headerBuffer,temp,location,WORD);
+    info->sizeOf = concatenateBits(temp,WORD);
+    location +=4; 
+
+    // Displays application specific data
+    location +=4;
+
+
+    // Displays header offset
+    location +=4;
+    
+    // Displays byte remaining after this point   
+    location +=4;
+
+    // Width in pixels
+    arrayInit(headerBuffer,temp,location,WORD);
+    info->width = concatenateBits(temp,WORD);
+    location +=4;
+    
+    // Height in pixels
+    arrayInit(headerBuffer,temp,location,WORD);
+    info->height = concatenateBits(temp,WORD);
+    location +=4;
+
+    // We can ignore the next 12 bytes so we just add 12 to the location.
+    //----------------------------------------------------------------------
+    //  This is what the 12 bytes contain:
+    //  2: Number of color planes being used.
+    //  2: The number of bits/pixel.
+    //  4: BI_RGB, No compression used
+    //  4: The size of the raw BMP data (after this header)
+    //----------------------------------------------------------------------
+    location += 4*3;
+
+    // Horizontal resolution in pixels/meter
+    location +=4;
+    
+    // Vertical resolution in pixels/meter 
+    location +=4;
+
+    // We can ignore the next 8 bytes so we just add 8 to the location.
+    //----------------------------------------------------------------------
+    //  This is what the 8 bytes contain:
+    //  4: Number of colors in the palette
+    //  4: Means all colors are important
+    //----------------------------------------------------------------------
+    location += 4*2;
+
+    // Release memory allocated for char* temp
+    free(temp);
+}        // -----  end of function extractBMPHeaderInfo  -----
+
+// ===  FUNCTION  =============================================================
+//         Name:  displayBMPHeaderInfo
+//  Description:  This will display header information and will do nothing more
+// ============================================================================
+void displayBMPHeaderInfo ( unsigned char * headerBuffer)
 {
     // We use this variable to determine the size of the bits we want to shift
     // by, in this case it is a WORD or 4 bits.
@@ -90,8 +165,6 @@ void extractBMPHeaderInfo ( unsigned char * headerBuffer, headerInfo *info )
         
 
     // Determines correct BMP type
-    info->type[0] = headerBuffer[location];
-    info->type[1] = headerBuffer[location + 1];
     printf("File type: %c%c\n", headerBuffer[location], headerBuffer[location + 1]);
     location += 2;
 
@@ -101,8 +174,7 @@ void extractBMPHeaderInfo ( unsigned char * headerBuffer, headerInfo *info )
             headerBuffer[location + 2],
             headerBuffer[location + 3]);
     arrayInit(headerBuffer,temp,location,WORD);
-    info->sizeOf = concatenateBits(temp,WORD);
-    printf("File size: %d\n", info->sizeOf);
+    printf("File size: %d\n", concatenateBits(temp,WORD));
     location +=4; 
 
     // Displays application specific data
@@ -137,8 +209,7 @@ void extractBMPHeaderInfo ( unsigned char * headerBuffer, headerInfo *info )
             headerBuffer[location + 2],
             headerBuffer[location + 3]);
     arrayInit(headerBuffer,temp,location,WORD);
-    info->width = concatenateBits(temp,WORD);
-    printf("Width: %d\n", info->width);
+    printf("Width: %d\n", concatenateBits(temp,WORD));
     location +=4;
     
     // Height in pixels
@@ -147,8 +218,7 @@ void extractBMPHeaderInfo ( unsigned char * headerBuffer, headerInfo *info )
             headerBuffer[location + 2],
             headerBuffer[location + 3]);
     arrayInit(headerBuffer,temp,location,WORD);
-    info->height = concatenateBits(temp,WORD);
-    printf("Height: %d\n", info->height);
+    printf("Height: %d\n", concatenateBits(temp,WORD));
     location +=4;
 
     // We can ignore the next 12 bytes so we just add 12 to the location.
@@ -189,4 +259,4 @@ void extractBMPHeaderInfo ( unsigned char * headerBuffer, headerInfo *info )
 
     // Release memory allocated for char* temp
     free(temp);
-}        // -----  end of function extractBMPHeaderInfo  -----
+}        // -----  end of function displayBMPHeaderInfo  -----

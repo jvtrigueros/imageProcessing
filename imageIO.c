@@ -48,8 +48,11 @@ FILE *readImage(char *filename)
 //  Description:  This will create an image buffer and return an array with all
 //                that data.
 // ============================================================================
-unsigned char *createImageBuffer(FILE *image)
+unsigned char *createImageBuffer(char *filename)
 {
+    // Creating FILE pointer
+    FILE *image = readImage(filename);
+
     // Local Vars
     long fileSize;
     unsigned char* imageBuffer;
@@ -114,14 +117,16 @@ unsigned int concatenateBits (unsigned char* bytes, int numberOfBytes)
 //         Name:  writeBMP
 //  Description:  This function will write the buffer data to a BMP file.
 // ============================================================================
-unsigned char *writeBMP ( pixelData **pixels, unsigned char *header, 
-                headerInfo info)
+void writeBMP ( pixelData **pixels, unsigned char *header, 
+                headerInfo info, char *filename)
 {
     int const BUFFERSIZE = 54;
     int i,j,imageLoc;
+    FILE *outputFile;
 
     imageLoc = BUFFERSIZE;
 
+    // Will contain the BMP info
     unsigned char* bmpBuffer = malloc(info.sizeOf);
 
     // Copy header information into the first 54 bytes of bmpBuffer
@@ -160,6 +165,8 @@ unsigned char *writeBMP ( pixelData **pixels, unsigned char *header,
         }
     }
 
-    // Finally, return the written buffer 
-    return bmpBuffer;
+    // Write the bmpBuffer to a file
+    outputFile = fopen(filename, "wb");
+    fwrite(bmpBuffer, 1, info.sizeOf, outputFile);
+    fclose(outputFile);
 }        // -----  end of function writeBMP  -----

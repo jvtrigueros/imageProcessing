@@ -34,7 +34,7 @@ FILE *readImage(char * filename);
 //  Description:  This will create an image buffer and return an array with all
 //                that data.
 // ============================================================================
-unsigned char *createImageBuffer(FILE *image);
+unsigned char *createImageBuffer(char *filename);
 
 // ===  FUNCTION  =============================================================
 //         Name:  concatenateBits()
@@ -47,7 +47,7 @@ unsigned int concatenateBits (unsigned char* bytes, int numberOfBytes);
 //         Name:  writeBMP
 //  Description:  This function will write the buffer data to a BMP file.
 // ============================================================================
-unsigned char *writeBMP ( pixelData **pixels, unsigned char *header, 
-                headerInfo info);
+void writeBMP ( pixelData **pixels, unsigned char *header, 
+                headerInfo info, char *filename);
 
 #endif /* IMAGEIO_H */
