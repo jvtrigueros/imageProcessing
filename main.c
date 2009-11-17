@@ -1,73 +1,84 @@
-/*
-File: main.c
-Author: Daniel Gonzalez
-Date: 11/13/09
-Descr: gets a full name
-*/
+// ============================================================================
+// 
+//       Filename:  main.c
+// 
+//    Description:  
+// 
+//        Version:  1.0
+//        Created:  11/17/2009 09:17:32 AM
+//       Revision:  none
+//       Compiler:  g++
+// 
+//         Author:  Jose V. Trigueros (), j.v.trigueros@gmail.com
+//        Company:  
+// 
+// ============================================================================
 
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include "imageIO.h"
+#include    <stdio.h>
+#include    <stdlib.h>
 
-int main()/*starts main method*/
-{	
- 	int choice; 
-    FILE *imageHandler;
+// ===  FUNCTION  =============================================================
+//         Name:  printMenu
+//  Description:  Prints the menu with the available choices.
+// ============================================================================
+void printMenu ()
+{
+    puts("1. Read Image");
+    puts("2. Write Image");
+    puts("3. Change Intensity");
+    puts("4. Flip Horizontally");
+    puts("5. Flip Vertically");
+    puts("6. Rotate Clockwise");
+    puts("7. Quit");
 
-	while(choice != 7)
-	{
-		printf("\nBMP Image Processing Program \n");/*creates the menu*/
-		printf("1. Read Image \n");
-		printf("2. Write Image \n");
-		printf("3. Change Intensity \n");
-		printf("4. Flip Horizontal \n");
-		printf("5. Flip Vertical \n");
-		printf("6. Rotate Clockwise \n");
-		printf("7. Quit \n");
-		scanf("%d", &choice);/*asks for choice*/
-		
-		if(choice == 1)/*checks for read image*/
-		{
-			char file_name[32];/*creates character array */
-			printf("Please insert image name\n");
-			scanf("%s[^\n]", file_name);/*stores file name in array image*/
-            imageHandler = readImage(file_name);
-//			*createImageBuffer(*imageHandler)
-			
-		}
+    printf("\nChoice? ");
+}        // -----  end of function printMenu  -----
 
-		else if(choice == 2)/*write image */
-		{
-			printf("2. Write Image \n");
-		}
+int main()
+{
+    // Vars
+    int choice = 0;
+    int loop = 1;
 
-		else if(choice == 3)/*change the intensity*/
-		{
-			printf("3. Change Intensity \n");
-		}
-		
-		else if(choice == 4)/*flip horizontal*/
-		{
-			printf("4. Flip Horizontal \n");
-		}
+    puts("\nBMP Image Processing Program");
+    puts("----------------------------");
 
-		else if(choice == 5)/*flip vertical*/
-		{
-			printf("5. Flip Vertical \n");
-		}
-		
-		else if(choice == 6)/*rotate clockwise*/
-		{
-			printf("6. Rotate Clockwise \n");
-		}
-		
-		else/*exits program*/
-		{
-			exit(0);
-		}
+    while( loop )
+    {
+        // Ask for choices again
+        printMenu();
+        scanf("%d", &choice);
 
-	
-	}
-	return 0;
+        switch (choice) 
+        {
+            case 1:	
+                break;
+
+            case 2:	
+                break;
+
+            case 3:	
+                break;
+
+            case 4:	
+                break;
+
+            case 5:	
+                break;
+
+            case 6:	
+                break;
+
+            case 7:	
+                loop = 0;
+                break;
+
+            default:	
+                puts("\nInvalid Choice, Please Try Again :D\n");
+                break;
+        }				// -----  end switch  -----
+
+    }
+
+    return 0;
 }
