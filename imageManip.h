@@ -31,6 +31,12 @@ typedef struct
 
 
 // ===  FUNCTION  =============================================================
+//         Name:  TODO:allocMatrix()
+//  Description:  Simply creates a 2D array of pixelData
+// ============================================================================
+pixelData **allocMatrix( int width, int height );
+
+// ===  FUNCTION  =============================================================
 //         Name:  createImageMatrix
 //  Description:  This will create a matrix of pixelData storing the pixel
 //                colour information in each cell.
@@ -43,7 +49,6 @@ pixelData **createImageMatrix ( unsigned char *imageData, int width, int height)
 // ============================================================================
 void displayMatrix ( pixelData **pixels, int width, int height );
 
-
 // ===  FUNCTION  =============================================================
 //         Name:  changeIntensity()
 //  Description:  Change the intensity of the picture by some factor provided
@@ -51,9 +56,20 @@ void displayMatrix ( pixelData **pixels, int width, int height );
 // ============================================================================
 void changeIntensity (pixelData **pixels, double factor, int width, int height );
 
+// ===  FUNCTION  =============================================================
+//         Name:  flipHorizontal()
+//  Description:  Flips the image across the x-axis
+// ============================================================================
+void flipHorizontal (pixelData **pixels, int width, int height );
 
 // ===  FUNCTION  =============================================================
-//         Name:  freeImageMatrix()
+//         Name:  copyImageBuffer
+//  Description:  Copies the data from pixelData A to pixelData B.
+// ============================================================================
+void copyImageBuffer ( pixelData **A, pixelData **B, int width, int height );
+
+// ===  FUNCTION  =============================================================
+//         Name:  TODO:freeImageMatrix()
 //  Description:  This function will simply de-allocate all the data allocated
 //                for the image matrix.
 // ============================================================================

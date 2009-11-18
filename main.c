@@ -135,7 +135,7 @@ int main()
                 }
                 else 
                 {
-//                    <+ELSE PART+>
+                    flipHorizontal(pixels, info.width,info.height);
                 }
                 break;
 

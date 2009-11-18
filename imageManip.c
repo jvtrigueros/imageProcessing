@@ -71,7 +71,6 @@ pixelData **createImageMatrix ( unsigned char *imageData, int width, int height 
     return pixels;
 }        // -----  end of function createImageMatrix  -----
 
-
 // ===  FUNCTION  =============================================================
 //         Name:  displayMatrix()
 //  Description:  Displays the data stored in the pixel matrix
@@ -93,7 +92,6 @@ void displayMatrix ( pixelData **pixels, int width, int height )
     }
 }        // -----  end of function displayMatrix  -----
 
-
 // ===  FUNCTION  =============================================================
 //         Name:  changeIntensity()
 //  Description:  Change the intensity of the picture by some factor provided
@@ -103,14 +101,83 @@ void changeIntensity (pixelData **pixels, double factor, int width, int height )
 {
     int i,j;
     //Iterate through columns
+//    factor /= 100;
     
     for ( i = 0 ; i < height ; i++ ) 
     {
         for ( j = 0; j < width; j++ )
         {
-            pixels[i][j].Red = (int)( ( (pixels[i][j].Red) * factor) + pixels[i][j].Red ) % 255;
-            pixels[i][j].Green = (int)( ( (pixels[i][j].Green) * factor) + pixels[i][j].Green ) % 255;
-            pixels[i][j].Blue = (int)( ( (pixels[i][j].Blue) * factor) + pixels[i][j].Blue ) % 255;
+            
+            pixels[i][j].Red = (int)( ((pixels[i][j].Red) * factor) );
+            pixels[i][j].Red = (pixels[i][j].Red > 255 ) ? 255 : pixels[i][j].Red;
+
+            pixels[i][j].Green = (int)( ( (pixels[i][j].Green) * factor));
+            pixels[i][j].Green = (pixels[i][j].Green > 255 ) ? 255 : pixels[i][j].Green;
+
+            pixels[i][j].Blue = (int)( ( (pixels[i][j].Blue) * factor));
+            pixels[i][j].Blue = (pixels[i][j].Blue > 255 ) ? 255 : pixels[i][j].Blue;
         }
     }
 }        // -----  end of function changeIntensity  -----
+
+
+// ===  FUNCTION  =============================================================
+//         Name:  flipHorizontal()
+//  Description:  Flips the image across the x-axis
+// ============================================================================
+void flipHorizontal (pixelData **pixels, int width, int height )
+{
+    // allocate memory for a 2D Array of pixelData, by first creating a 1D 
+    pixelData **temp = (pixelData**)malloc(height * sizeof(pixelData*));
+
+    // Now create the rest of the 2D array
+    int j,i = 0;
+    for(; i < height; i++ )
+    {
+       *(temp + i) = (pixelData*)malloc(width * sizeof(pixelData));
+    }
+
+    //Iterate through columns
+//    factor /= 100;
+    
+    for ( i = 0 ; i < height ; i++ ) 
+    {
+        for ( j = 0; j < width; j++ )
+        {
+            
+            temp[i][j].Red = pixels[(width - 1) - i][j].Red;
+            temp[i][j].Green = pixels[(width - 1) - i][j].Green;
+            temp[i][j].Blue = pixels[(width - 1) - i][j].Blue;
+        }
+    }
+    copyImageBuffer(temp,pixels, width, height);
+
+}        // -----  end of function changeIntensity  -----
+
+// ===  FUNCTION  =============================================================
+//         Name:  copyImageBuffer
+//  Description:  Copies the data from pixelData A to pixelData B.
+// ============================================================================
+void copyImageBuffer ( pixelData **A, pixelData **B, int width, int height )
+{
+    int i,j;
+
+    for ( i = 0 ; i < height ; i++ ) 
+    {
+        for ( j = 0; j < width; j++ )
+        {
+            B[i][j].Red = A[i][j].Red;
+            B[i][j].Green = A[i][j].Green;
+            B[i][j].Blue = A[i][j].Blue;
+        }
+    }
+}        // -----  end of function copyImageBuffer  -----
+
+
+
+//            pixels[i][j].Red = (int)( ((pixels[i][j].Red) * factor) + pixels[i][j].Red );
+//            pixels[i][j].Red = (pixels[i][j].Red > 255 ) ? 255 : pixels[i][j].Red;
+//            pixels[i][j].Green = (int)( ( (pixels[i][j].Green) * factor) + pixels[i][j].Green );
+//            pixels[i][j].Green = (pixels[i][j].Green > 255 ) ? 255 : pixels[i][j].Green;
+//            pixels[i][j].Blue = (int)( ( (pixels[i][j].Blue) * factor) + pixels[i][j].Blue );
+//            pixels[i][j].Blue = (pixels[i][j].Blue > 255 ) ? 255 : pixels[i][j].Blue;
