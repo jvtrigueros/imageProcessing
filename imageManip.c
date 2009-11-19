@@ -112,23 +112,32 @@ void displayMatrix ( pixelData **pixels, int width, int height )
 // ============================================================================
 void changeIntensity (pixelData **pixels, double factor, int width, int height )
 {
-    int i,j;
-    //Iterate through columns
-//    factor /= 100;
+    int const NEUTRAL = 127;
+    int i,j,difference;
     
     for ( i = 0 ; i < height ; i++ ) 
     {
         for ( j = 0; j < width; j++ )
         {
             
-            pixels[i][j].Red = (int)( ((pixels[i][j].Red) * factor) );
-            pixels[i][j].Red = (pixels[i][j].Red > 255 ) ? 255 : pixels[i][j].Red;
+            //----------------------------------------------------------------------
+            //  The problem was that the fields RGB are unsigned chars which go from
+            //  0-255, thus storing a number greater than that cause it to give
+            //  incorect results. 
+            //----------------------------------------------------------------------
+            difference = pixels[i][j].Red - NEUTRAL;
+//            pixels[i][j].Red = (int)( ( NEUTRAL + (factor * difference) ) );
+            pixels[i][j].Red = ( ((int)( ( NEUTRAL + (factor * difference) ) )) > 255 ) ? 255 : pixels[i][j].Red;
 
-            pixels[i][j].Green = (int)( ( (pixels[i][j].Green) * factor));
-            pixels[i][j].Green = (pixels[i][j].Green > 255 ) ? 255 : pixels[i][j].Green;
+            difference = pixels[i][j].Green - NEUTRAL;
+//            pixels[i][j].Green = (int)( ( NEUTRAL + (factor * difference) ) );
+//            pixels[i][j].Green = (pixels[i][j].Green > 255 ) ? 255 : pixels[i][j].Green;
+            pixels[i][j].Red = ( ((int)( ( NEUTRAL + (factor * difference) ) )) > 255 ) ? 255 : pixels[i][j].Red;
 
-            pixels[i][j].Blue = (int)( ( (pixels[i][j].Blue) * factor));
-            pixels[i][j].Blue = (pixels[i][j].Blue > 255 ) ? 255 : pixels[i][j].Blue;
+            difference = pixels[i][j].Blue - NEUTRAL;
+//            pixels[i][j].Blue = (int)( ( NEUTRAL + (factor * difference) ) );
+//            pixels[i][j].Blue = (pixels[i][j].Blue > 255 ) ? 255 : pixels[i][j].Blue;
+            pixels[i][j].Red = ( ((int)( ( NEUTRAL + (factor * difference) ) )) > 255 ) ? 255 : pixels[i][j].Red;
         }
     }
 }        // -----  end of function changeIntensity  -----
