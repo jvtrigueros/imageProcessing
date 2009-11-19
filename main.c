@@ -163,6 +163,7 @@ int main()
 
             case 7:	
                 loop = 0;
+                freeImageMatrix(pixels,info.width,info.height);
                 puts("\nGood Bye!!!\n");
                 break;
 

@@ -31,7 +31,7 @@ typedef struct
 
 
 // ===  FUNCTION  =============================================================
-//         Name:  TODO:allocMatrix()
+//         Name:  allocMatrix()
 //  Description:  Simply creates a 2D array of pixelData
 // ============================================================================
 pixelData **allocMatrix( int width, int height );
@@ -73,6 +73,6 @@ void copyImageBuffer ( pixelData **A, pixelData **B, int width, int height );
 //  Description:  This function will simply de-allocate all the data allocated
 //                for the image matrix.
 // ============================================================================
-void freeImageMatrix ( pixelData **pixels );
+void freeImageMatrix ( pixelData **pixels, int width, int height );
 
 #endif /* IMAGEMANIP_H  */
