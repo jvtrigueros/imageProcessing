@@ -62,7 +62,6 @@ int main()
     char * filename = malloc(lengthOfFilename);
     headerInfo info;
 
-
     puts("\nBMP Image Processing Program");
     puts("----------------------------");
 
@@ -74,6 +73,7 @@ int main()
 
         switch (choice) 
         {
+            // Read Image
             case 1:	
                 // Maybe have something for when a bmp has already been read
                 bmpRead = 1;
@@ -99,6 +99,7 @@ int main()
 
                 break;
 
+            // Write Image
             case 2:	
                 if ( !bmpRead ) 
                 {
@@ -114,6 +115,7 @@ int main()
                 }
                 break;
 
+            // Change Intensity
             case 3:	
                 if ( !bmpRead ) 
                 {
@@ -128,6 +130,7 @@ int main()
                 }
                 break;
 
+            // Flip Horz
             case 4:	
                 if ( !bmpRead ) 
                 {
@@ -139,6 +142,7 @@ int main()
                 }
                 break;
 
+            // Flip Vert
             case 5:	
                 if ( !bmpRead ) 
                 {
@@ -146,10 +150,11 @@ int main()
                 }
                 else 
                 {
-//                    <+ELSE PART+>
+                    flipVertical(pixels, info.width,info.height);
                 }
                 break;
 
+            // Rotate ClckWise
             case 6:	
                 if ( !bmpRead ) 
                 {
@@ -161,6 +166,7 @@ int main()
                 }
                 break;
 
+            // Exit
             case 7:	
                 loop = 0;
                 freeImageMatrix(pixels,info.width,info.height);

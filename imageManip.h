@@ -63,6 +63,12 @@ void changeIntensity (pixelData **pixels, double factor, int width, int height )
 void flipHorizontal (pixelData **pixels, int width, int height );
 
 // ===  FUNCTION  =============================================================
+//         Name:  flipVertical()
+//  Description:  Flips the image across the x-axis
+// ============================================================================
+void flipVertical (pixelData **pixels, int width, int height );
+
+// ===  FUNCTION  =============================================================
 //         Name:  copyImageBuffer
 //  Description:  Copies the data from pixelData A to pixelData B.
 // ============================================================================

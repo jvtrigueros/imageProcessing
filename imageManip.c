@@ -113,31 +113,44 @@ void displayMatrix ( pixelData **pixels, int width, int height )
 void changeIntensity (pixelData **pixels, double factor, int width, int height )
 {
     int const NEUTRAL = 127;
-    int i,j,difference;
+    int i,j,temp;
     
     for ( i = 0 ; i < height ; i++ ) 
     {
         for ( j = 0; j < width; j++ )
         {
-            
             //----------------------------------------------------------------------
             //  The problem was that the fields RGB are unsigned chars which go from
-            //  0-255, thus storing a number greater than that cause it to give
+            //  0-255, thus storing a number greater than that caused it to give
             //  incorect results. 
             //----------------------------------------------------------------------
-            difference = pixels[i][j].Red - NEUTRAL;
-//            pixels[i][j].Red = (int)( ( NEUTRAL + (factor * difference) ) );
-            pixels[i][j].Red = ( ((int)( ( NEUTRAL + (factor * difference) ) )) > 255 ) ? 255 : pixels[i][j].Red;
+            temp = (int)( ((pixels[i][j].Red) * factor) );
+            pixels[i][j].Red = (temp > 255 ) ? 255 : temp;
 
-            difference = pixels[i][j].Green - NEUTRAL;
-//            pixels[i][j].Green = (int)( ( NEUTRAL + (factor * difference) ) );
+            temp = (int)( ( (pixels[i][j].Green) * factor)  );
+            pixels[i][j].Green = (temp > 255 ) ? 255 : temp;
+
+            temp = (int)( ( (pixels[i][j].Blue) * factor)  );
+            pixels[i][j].Blue = (temp > 255 ) ? 255 : temp;
+
+//            difference = pixels[i][j].Red - NEUTRAL;
+//            temp = (int)( ( NEUTRAL + (factor * difference) ) );
+//            pixels[i][j].Red = ( temp  > 255 ) ? 255 : temp;
+//
+//            difference = pixels[i][j].Green - NEUTRAL;
+//            temp = (int)( ( NEUTRAL + (factor * difference) ) );
+//            pixels[i][j].Green = ( temp  > 255 ) ? 255 : temp;
+//
+//            difference = pixels[i][j].Blue - NEUTRAL;
+//            temp = (int)( ( NEUTRAL + (factor * difference) ) );
+//            pixels[i][j].Blue = ( temp  > 255 ) ? 255 : temp;
+
+//            pixels[i][j].Red = (int)( ((pixels[i][j].Red) * factor) + pixels[i][j].Red );
+//            pixels[i][j].Red = (pixels[i][j].Red > 255 ) ? 255 : pixels[i][j].Red;
+//            pixels[i][j].Green = (int)( ( (pixels[i][j].Green) * factor) + pixels[i][j].Green );
 //            pixels[i][j].Green = (pixels[i][j].Green > 255 ) ? 255 : pixels[i][j].Green;
-            pixels[i][j].Red = ( ((int)( ( NEUTRAL + (factor * difference) ) )) > 255 ) ? 255 : pixels[i][j].Red;
-
-            difference = pixels[i][j].Blue - NEUTRAL;
-//            pixels[i][j].Blue = (int)( ( NEUTRAL + (factor * difference) ) );
+//            pixels[i][j].Blue = (int)( ( (pixels[i][j].Blue) * factor) + pixels[i][j].Blue );
 //            pixels[i][j].Blue = (pixels[i][j].Blue > 255 ) ? 255 : pixels[i][j].Blue;
-            pixels[i][j].Red = ( ((int)( ( NEUTRAL + (factor * difference) ) )) > 255 ) ? 255 : pixels[i][j].Red;
         }
     }
 }        // -----  end of function changeIntensity  -----
@@ -164,7 +177,32 @@ void flipHorizontal (pixelData **pixels, int width, int height )
     }
 
     copyImageBuffer(temp,pixels, width, height);
+    freeImageMatrix(temp,width,height);
 }        // -----  end of function changeIntensity  -----
+
+// ===  FUNCTION  =============================================================
+//         Name:  flipVertical()
+//  Description:  Flips the image across the x-axis
+// ============================================================================
+void flipVertical (pixelData **pixels, int width, int height )
+{
+    int i,j;
+    // Create 2D pixelData Array
+    pixelData **temp = allocMatrix(width, height);
+
+    for ( i = 0 ; i < height ; i++ ) 
+    {
+        for ( j = 0; j < width; j++ )
+        {
+            temp[i][j].Red   = pixels[i][(height - 1) - j].Red;
+            temp[i][j].Green = pixels[i][(height - 1) - j].Green;
+            temp[i][j].Blue  = pixels[i][(height - 1) - j].Blue;
+        }
+    }
+
+    copyImageBuffer(temp,pixels, width, height);
+    freeImageMatrix(temp,width,height);
+}
 
 // ===  FUNCTION  =============================================================
 //         Name:  copyImageBuffer
@@ -186,7 +224,7 @@ void copyImageBuffer ( pixelData **A, pixelData **B, int width, int height )
 }        // -----  end of function copyImageBuffer  -----
 
 // ===  FUNCTION  =============================================================
-//         Name:  TODO:freeImageMatrix()
+//         Name:  freeImageMatrix()
 //  Description:  This function will simply de-allocate all the data allocated
 //                for the image matrix.
 // ============================================================================
@@ -203,9 +241,3 @@ void freeImageMatrix ( pixelData **pixels, int width, int height )
 
 
 
-//            pixels[i][j].Red = (int)( ((pixels[i][j].Red) * factor) + pixels[i][j].Red );
-//            pixels[i][j].Red = (pixels[i][j].Red > 255 ) ? 255 : pixels[i][j].Red;
-//            pixels[i][j].Green = (int)( ( (pixels[i][j].Green) * factor) + pixels[i][j].Green );
-//            pixels[i][j].Green = (pixels[i][j].Green > 255 ) ? 255 : pixels[i][j].Green;
-//            pixels[i][j].Blue = (int)( ( (pixels[i][j].Blue) * factor) + pixels[i][j].Blue );
-//            pixels[i][j].Blue = (pixels[i][j].Blue > 255 ) ? 255 : pixels[i][j].Blue;
