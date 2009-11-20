@@ -3,4 +3,5 @@
 *.o
 *.d
 *.bmp
+test.*
 ImageProcessor

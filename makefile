@@ -3,7 +3,7 @@
 
 BINARY	=	ImageProcessor
 CFLAGS	=	-g -Wall
-SOURCES =	main.c 	headerFunctions.c imageIO.c	imageManip.c
+SOURCES =	test.c 	headerFunctions.c imageIO.c	imageManip.c
 			#main.c	
 OBJECTS = $(SOURCES:.c=.o)
 $(BINARY): $(OBJECTS)

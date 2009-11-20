@@ -162,7 +162,8 @@ int main()
                 }
                 else 
                 {
-//                    <+ELSE PART+>
+                   rotateClockwise(pixels, &info);
+                   setHeaderDimensions(headerBuffer, info.width, info.height);
                 }
                 break;
 

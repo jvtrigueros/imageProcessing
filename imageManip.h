@@ -14,6 +14,9 @@
 // 
 // ============================================================================
 
+
+#include    "headerFunctions.h"
+
 #ifndef IMAGEMANIP_H 
 #define IMAGEMANIP_H
 
@@ -75,7 +78,13 @@ void flipVertical (pixelData **pixels, int width, int height );
 void copyImageBuffer ( pixelData **A, pixelData **B, int width, int height );
 
 // ===  FUNCTION  =============================================================
-//         Name:  TODO:freeImageMatrix()
+//         Name:  rotateClockwise
+//  Description:  Rotate the image clockwise
+// ============================================================================
+void rotateClockwise ( pixelData **pixels, headerInfo *info);
+
+// ===  FUNCTION  =============================================================
+//         Name:  freeImageMatrix()
 //  Description:  This function will simply de-allocate all the data allocated
 //                for the image matrix.
 // ============================================================================

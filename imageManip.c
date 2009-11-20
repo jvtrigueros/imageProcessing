@@ -112,7 +112,6 @@ void displayMatrix ( pixelData **pixels, int width, int height )
 // ============================================================================
 void changeIntensity (pixelData **pixels, double factor, int width, int height )
 {
-    int const NEUTRAL = 127;
     int i,j,temp;
     
     for ( i = 0 ; i < height ; i++ ) 
@@ -224,6 +223,44 @@ void copyImageBuffer ( pixelData **A, pixelData **B, int width, int height )
 }        // -----  end of function copyImageBuffer  -----
 
 // ===  FUNCTION  =============================================================
+//         Name:  rotateClockwise
+//  Description:  Rotate the image clockwise
+// ============================================================================
+void rotateClockwise ( pixelData **pixels, headerInfo *info)
+{
+    int i,j;
+    int width = info->width;
+    int height = info->height;
+
+    // Create matrix for rotated image
+    pixelData **rotatedPixels = allocMatrix(height, width);
+
+    // Iterate through the pixels matrix
+    for ( i = 0 ; i < height ; i++ ) 
+    {
+        for ( j = 0; j < width; j++ )
+        {
+            rotatedPixels[j][(height - 1) - i].Red   = pixels[i][j].Red;
+            rotatedPixels[j][(height - 1) - i].Green = pixels[i][j].Green;
+            rotatedPixels[j][(height - 1) - i].Blue  = pixels[i][j].Blue;
+        }
+    }
+
+    // Now that the rotated pixels have been copied, we can delete pixels and 
+    // create a new one with different dimensions and then copy the rotated
+    // pixels
+    
+    freeImageMatrix(pixels, width, height);
+    pixels = allocMatrix(height,width);
+
+    copyImageBuffer( rotatedPixels, pixels, height, width);
+
+    // Swap the headerInfo's height and width to reflect the changes
+    info->width = height;
+    info->height = width;
+}        // -----  end of function rotateClockwise  -----
+
+// ===  FUNCTION  =============================================================
 //         Name:  freeImageMatrix()
 //  Description:  This function will simply de-allocate all the data allocated
 //                for the image matrix.
@@ -238,6 +275,3 @@ void freeImageMatrix ( pixelData **pixels, int width, int height )
     }
     free(pixels);
 }        // -----  end of function freeImageMatrix  -----
-
-
-

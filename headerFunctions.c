@@ -149,6 +149,52 @@ void extractBMPHeaderInfo ( unsigned char * headerBuffer, headerInfo *info )
 }        // -----  end of function extractBMPHeaderInfo  -----
 
 // ===  FUNCTION  =============================================================
+//         Name:  setHeaderDimensions
+//  Description:  Change the width and the height after rotating image or doing
+//                any other operation.
+// ============================================================================
+void setHeaderDimensions ( unsigned char * headerBuffer, int newWidth, int newHeight )
+{
+    int const LENGTHOFDIM = 4;
+
+    // Location of width 18-21
+    unsigned char width[4];
+    int widthLoc = 18;
+    
+    // Location of height 22-25
+    unsigned char height[4];
+    int heightLoc = 22;
+
+    int i;
+    unsigned char temp = 0x00;
+
+    // Get the bytes for the header
+    for(i = 0; i < LENGTHOFDIM ; i++)
+    {
+        // Get bytes for width
+        temp = 0x00 | newWidth;
+        newWidth = newWidth >> 8;
+        width[i] = temp;
+
+        // reset temp 
+        temp = 0x00;
+
+        // Get bytes for height
+        temp = 0x00 | newHeight;
+        newHeight = newHeight >> 8;
+        height[i] = temp;
+    }
+
+
+    // Set the width and height
+    for(i = 0; i < LENGTHOFDIM; i++, widthLoc++,heightLoc++)
+    {
+        headerBuffer[widthLoc] = width[i];
+        headerBuffer[heightLoc] = height[i];
+    }
+}        // -----  end of function changeHeaderDimensions  -----
+
+// ===  FUNCTION  =============================================================
 //         Name:  displayBMPHeaderInfo
 //  Description:  This will display header information and will do nothing more
 // ============================================================================
