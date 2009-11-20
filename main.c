@@ -31,7 +31,8 @@ void printMenu ()
     puts("4. Flip Horizontally");
     puts("5. Flip Vertically");
     puts("6. Rotate Clockwise");
-    puts("7. Quit");
+    puts("7. Rotate CounterClockwise");
+    puts("8. Quit");
 
     printf("\nChoice? ");
 }        // -----  end of function printMenu  -----
@@ -167,11 +168,29 @@ int main()
                 }
                 break;
 
-            // Exit
+            // Rotate CounterClckWise
             case 7:	
+                if ( !bmpRead ) 
+                {
+                    puts("Please select option 1 first.\n"); 
+                }
+                else 
+                {
+                   rotateCounterClockwise(pixels, &info);
+                   setHeaderDimensions(headerBuffer, info.width, info.height);
+                }
+                break;
+
+            // Exit
+            case 8:	
                 loop = 0;
-                freeImageMatrix(pixels,info.width,info.height);
+                if( bmpRead )
+                    freeImageMatrix(pixels,info.width,info.height);
                 puts("\nGood Bye!!!\n");
+                break;
+
+            case 9:	
+                invertColours(pixels, info.width, info.height);
                 break;
 
             default:	

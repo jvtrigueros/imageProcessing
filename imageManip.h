@@ -59,6 +59,8 @@ void displayMatrix ( pixelData **pixels, int width, int height );
 // ============================================================================
 void changeIntensity (pixelData **pixels, double factor, int width, int height );
 
+void invertColours ( pixelData **pixels, int width, int height );
+
 // ===  FUNCTION  =============================================================
 //         Name:  flipHorizontal()
 //  Description:  Flips the image across the x-axis
@@ -79,9 +81,18 @@ void copyImageBuffer ( pixelData **A, pixelData **B, int width, int height );
 
 // ===  FUNCTION  =============================================================
 //         Name:  rotateClockwise
-//  Description:  Rotate the image clockwise
+//  Description:  Rotate the image clockwise, the trick was to realize that the
+//                bmp will is read upside down and when the rotations happen, 
+//                they don't necessarily rotate the right way.
 // ============================================================================
-void rotateClockwise ( pixelData **pixels, headerInfo *info);
+void rotateClockwise (  pixelData **pixels, headerInfo *info );
+
+// ===  FUNCTION  =============================================================
+//         Name:  freeImageMatrix()
+//  Description:  This function will simply de-allocate all the data allocated
+//                for the image matrix.
+// ============================================================================
+void rotateCounterClockwise ( pixelData **pixels, headerInfo *info);
 
 // ===  FUNCTION  =============================================================
 //         Name:  freeImageMatrix()

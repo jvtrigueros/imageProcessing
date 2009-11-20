@@ -154,6 +154,27 @@ void changeIntensity (pixelData **pixels, double factor, int width, int height )
     }
 }        // -----  end of function changeIntensity  -----
 
+
+void invertColours ( pixelData **pixels, int width, int height )
+{
+    int i,j,temp;
+    
+    for ( i = 0 ; i < height ; i++ ) 
+    {
+        for ( j = 0; j < width; j++ )
+        {
+            temp = 255 - pixels[i][j].Red;
+            pixels[i][j].Red = (temp < 0 ) ? 0 : temp;
+
+            temp = 255 - pixels[i][j].Green;
+            pixels[i][j].Green = (temp < 0 ) ? 0 : temp;
+
+            temp = 255 - pixels[i][j].Blue;
+            pixels[i][j].Blue = (temp < 0 ) ? 0 : temp;
+        }
+    }
+}        // -----  end of function invertColours  -----
+
 // ===  FUNCTION  =============================================================
 //         Name:  flipHorizontal()
 //  Description:  Flips the image across the x-axis
@@ -224,9 +245,49 @@ void copyImageBuffer ( pixelData **A, pixelData **B, int width, int height )
 
 // ===  FUNCTION  =============================================================
 //         Name:  rotateClockwise
-//  Description:  Rotate the image clockwise
+//  Description:  Rotate the image clockwise, the trick was to realize that the
+//                bmp will is read upside down and when the rotations happen, 
+//                they don't necessarily rotate the right way.
 // ============================================================================
-void rotateClockwise ( pixelData **pixels, headerInfo *info)
+void rotateClockwise (  pixelData **pixels, headerInfo *info ) 
+{
+    int i,j;
+    int width = info->width;
+    int height = info->height;
+
+    // Create matrix for rotated image
+    pixelData **rotatedPixels = allocMatrix(height, width);
+
+    // Iterate through the pixels matrix
+    for ( i = 0 ; i < height ; i++ ) 
+    {
+        for ( j = 0; j < width; j++ )
+        {
+            rotatedPixels[(width - 1) -  j][i].Red   = pixels[i][j].Red;
+            rotatedPixels[(width - 1) -  j][i].Green = pixels[i][j].Green;
+            rotatedPixels[(width - 1) -  j][i].Blue  = pixels[i][j].Blue;
+        }
+    }
+
+    // Now that the rotated pixels have been copied, we can delete pixels and 
+    // create a new one with different dimensions and then copy the rotated
+    // pixels
+    
+    freeImageMatrix(pixels, width, height);
+    pixels = allocMatrix(height,width);
+
+    copyImageBuffer( rotatedPixels, pixels, height, width);
+
+    // Swap the headerInfo's height and width to reflect the changes
+    info->width = height;
+    info->height = width;
+}        // -----  end of function rotateClockwise  -----
+
+// ===  FUNCTION  =============================================================
+//         Name:  rotateCounterClockwise
+//  Description:  Rotate the image counter clockwise
+// ============================================================================
+void rotateCounterClockwise ( pixelData **pixels, headerInfo *info )
 {
     int i,j;
     int width = info->width;
