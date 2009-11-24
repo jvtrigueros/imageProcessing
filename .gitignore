@@ -3,5 +3,6 @@
 *.o
 *.d
 *.bmp
+*.pdf
 test.*
 ImageProcessor
