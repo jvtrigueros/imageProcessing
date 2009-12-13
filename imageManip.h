@@ -95,10 +95,24 @@ void rotateClockwise (  pixelData **pixels, headerInfo *info );
 void rotateCounterClockwise ( pixelData **pixels, headerInfo *info);
 
 // ===  FUNCTION  =============================================================
+//         Name:  blurImage()
+//  Description:  Applies box blur to the image.
+// ============================================================================
+void blurImage( pixelData **pixels, int width, int height );
+
+// ===  FUNCTION  =============================================================
+//         Name:  boxBlur()
+//  Description:  Calculates the box blur for a single point in the image
+// ============================================================================
+pixelData boxBlur( pixelData **pixels, int i, int j );
+
+// ===  FUNCTION  =============================================================
 //         Name:  freeImageMatrix()
 //  Description:  This function will simply de-allocate all the data allocated
 //                for the image matrix.
 // ============================================================================
 void freeImageMatrix ( pixelData **pixels, int width, int height );
+
+
 
 #endif /* IMAGEMANIP_H  */

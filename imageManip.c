@@ -322,6 +322,74 @@ void rotateCounterClockwise ( pixelData **pixels, headerInfo *info )
 }        // -----  end of function rotateClockwise  -----
 
 // ===  FUNCTION  =============================================================
+//         Name:  boxBlur()
+//  Description:  Calculates the box blur for a single point in the image
+// ============================================================================
+pixelData boxBlur( pixelData **pixels, int i, int j )
+{
+    int r = 0;
+    int g = 0;
+    int b = 0;
+    int avgCount = 0;
+    
+    // These are the points around the point to be blurred 
+    int start_i = i - 1;
+    int start_j = j - 1;
+    int end_i   = i + 1;
+    int end_j   = j + 1;
+
+    int k,l;
+    for(k = start_i; k < end_i ; k++)
+    {
+        for(l = start_j; l < end_j; l++)
+        {
+            if( k >= 0 && l >= 0 )
+            {
+                avgCount++;
+                r += pixels[k][l].Red;
+                g += pixels[k][l].Green;
+                b += pixels[k][l].Blue;
+            }
+        }
+    }
+
+    r = r/avgCount;
+    g = g/avgCount;
+    b = b/avgCount;
+
+    pixelData temp;
+    temp.Red   = r;
+    temp.Green = g;
+    temp.Blue  = b;
+
+    return temp;
+}
+
+// ===  FUNCTION  =============================================================
+//         Name:  blurImage()
+//  Description:  Applies box blur to the image.
+// ============================================================================
+void blurImage( pixelData **pixels, int width, int height )
+{
+    pixelData **blurredImage = allocMatrix( width, height );
+
+    int i,j;
+    for (i = 0 ; i < height ; i++ ) 
+    {
+        for (j = 0; j < width; j++ )
+        {
+            pixelData temp = boxBlur( pixels, i, j); 
+
+            blurredImage[i][j].Red   = temp.Red;
+            blurredImage[i][j].Green = temp.Green;
+            blurredImage[i][j].Blue  = temp.Blue;
+        }
+    }
+
+    copyImageBuffer(blurredImage, pixels,width,height);
+}
+
+// ===  FUNCTION  =============================================================
 //         Name:  freeImageMatrix()
 //  Description:  This function will simply de-allocate all the data allocated
 //                for the image matrix.
@@ -336,3 +404,5 @@ void freeImageMatrix ( pixelData **pixels, int width, int height )
     }
     free(pixels);
 }        // -----  end of function freeImageMatrix  -----
+
+
