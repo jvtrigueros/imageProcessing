@@ -1,0 +1,30 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+allocMatrix	imageManip.c	/^pixelData **allocMatrix( int width, int height )$/;"	f
+arrayInit	headerFunctions.c	/^void arrayInit ( unsigned char * header, unsigned char *section, int currentLoc, int numberOfBytesToRead )$/;"	f
+changeIntensity	imageManip.c	/^void changeIntensity (pixelData **pixels, double factor, int width, int height )$/;"	f
+concatenateBits	imageIO.c	/^unsigned int concatenateBits (unsigned char* bytes, int numberOfBytes)$/;"	f
+copyImageBuffer	imageManip.c	/^void copyImageBuffer ( pixelData **A, pixelData **B, int width, int height )$/;"	f
+createImageBuffer	imageIO.c	/^unsigned char *createImageBuffer(char *filename)$/;"	f
+createImageMatrix	imageManip.c	/^pixelData **createImageMatrix ( unsigned char *imageData, int width, int height )$/;"	f
+displayBMPHeaderInfo	headerFunctions.c	/^void displayBMPHeaderInfo ( unsigned char * headerBuffer)$/;"	f
+displayHeaderInfo	headerFunctions.c	/^void displayHeaderInfo (headerInfo *info )$/;"	f
+displayMatrix	imageManip.c	/^void displayMatrix ( pixelData **pixels, int width, int height )$/;"	f
+extractBMPHeaderInfo	headerFunctions.c	/^void extractBMPHeaderInfo ( unsigned char * headerBuffer, headerInfo *info )$/;"	f
+flipHorizontal	imageManip.c	/^void flipHorizontal (pixelData **pixels, int width, int height )$/;"	f
+flipVertical	imageManip.c	/^void flipVertical (pixelData **pixels, int width, int height )$/;"	f
+freeImageMatrix	imageManip.c	/^void freeImageMatrix ( pixelData **pixels, int width, int height )$/;"	f
+isBMP	main.c	/^void isBMP (char *type )$/;"	f
+main	main.c	/^int main()$/;"	f
+main	test.c	/^int main()$/;"	f
+printMenu	main.c	/^void printMenu ()$/;"	f
+readBMPHeader	headerFunctions.c	/^unsigned char *readBMPHeader(unsigned char *fileBuffer)$/;"	f
+readImage	imageIO.c	/^FILE *readImage(char *filename)$/;"	f
+rotateClockwise	imageManip.c	/^void rotateClockwise (  pixelData **pixels, headerInfo *info ) $/;"	f
+rotateCounterClockwise	imageManip.c	/^void rotateCounterClockwise ( pixelData **pixels, headerInfo *info )$/;"	f
+setHeaderDimensions	headerFunctions.c	/^void setHeaderDimensions ( unsigned char * headerBuffer, int newWidth, int newHeight )$/;"	f
+writeBMP	imageIO.c	/^void writeBMP ( pixelData **pixels, unsigned char *header, $/;"	f
