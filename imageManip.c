@@ -397,6 +397,7 @@ void increaseSize ( pixelData **pixels, int width, int height, unsigned char *he
 {
     int factor = 2;
             printf("Ok here\n");
+
     pixelData **resizedImage = allocMatrix( factor*width, factor*height );
 
     int i,j,x_offset,y_offset;
