@@ -4,10 +4,7 @@
 // 
 //    Description:  This will contain the forward declaration of imageManip.c
 // 
-//        Version:  1.0
 //        Created:  11/16/2009 11:24:16 AM
-//       Revision:  none
-//       Compiler:  g++
 // 
 //         Author:  Jose V. Trigueros (), j.v.trigueros@gmail.com
 //        Company:  
@@ -96,7 +93,7 @@ void rotateCounterClockwise ( pixelData **pixels, headerInfo *info);
 
 // ===  FUNCTION  =============================================================
 //         Name:  blurImage()
-//  Description:  Applies box blur to the image.
+//  Description:  Applies blur to the image.
 // ============================================================================
 void blurImage( pixelData **pixels, int width, int height );
 
@@ -106,13 +103,19 @@ void blurImage( pixelData **pixels, int width, int height );
 // ============================================================================
 pixelData boxBlur( pixelData **pixels, int i, int j );
 
+
+// ===  FUNCTION  =============================================================
+//         Name:  increaseSize()
+//  Description:  Increase the size of the BMP by some factor.
+// ============================================================================
+void increaseSize ( pixelData **pixels, int width, int height, double factor );
+
 // ===  FUNCTION  =============================================================
 //         Name:  freeImageMatrix()
 //  Description:  This function will simply de-allocate all the data allocated
 //                for the image matrix.
 // ============================================================================
 void freeImageMatrix ( pixelData **pixels, int width, int height );
-
 
 
 #endif /* IMAGEMANIP_H  */
