@@ -35,7 +35,9 @@ void printMenu ()
     puts("7. Rotate CounterClockwise");
     puts("8. Invert Colours");
     puts("9. Blur");
-    puts("10. Quit");
+    puts("10.Increase Size");
+    puts("11.Decrease Size");
+    puts("12. Quit");
 
     printf("\nChoice? ");
 }        // -----  end of function printMenu  -----
@@ -201,8 +203,17 @@ int main()
                 }
                 break;
 
-            // Exit
+            // Increase Size
             case 10:	
+                increaseSize(pixels, info.width, info.height,headerBuffer);
+                break;
+
+            // Decrease Size
+            case 11:	
+                break;
+
+            // Exit
+            case 12:	
                 loop = 0;
                 if( bmpRead )
                     freeImageMatrix(pixels,info.width,info.height);

@@ -393,9 +393,43 @@ void blurImage( pixelData **pixels, int width, int height )
 //         Name:  increaseSize()
 //  Description:  Increase the size of the BMP by some factor.
 // ============================================================================
-void increaseSize ( pixelData **pixels, int width, int height, double factor )
+void increaseSize ( pixelData **pixels, int width, int height, unsigned char *headerBuffer)
 {
+    int factor = 2;
+            printf("Ok here\n");
     pixelData **resizedImage = allocMatrix( factor*width, factor*height );
+
+    int i,j,x_offset,y_offset;
+    for( i = 0, x_offset = 0 ; i < width; x_offset = i + factor, i++)
+    {
+        for( j = 0, y_offset = 0 ; j < height; y_offset = j + factor, j++)
+        {
+            //p.0
+            resizedImage[x_offset][y_offset].Red    = pixels[i][j].Red;
+            resizedImage[x_offset][y_offset].Green  = pixels[i][j].Green;
+            resizedImage[x_offset][y_offset].Blue   = pixels[i][j].Blue;
+
+            //p.1
+            resizedImage[x_offset*factor + 1 ][y_offset].Red    = pixels[i][j].Red;
+            resizedImage[x_offset*factor + 1 ][y_offset].Green  = pixels[i][j].Green;
+            resizedImage[x_offset*factor + 1 ][y_offset].Blue   = pixels[i][j].Blue;
+
+            //p.2
+            resizedImage[x_offset][y_offset*factor + 1].Red    = pixels[i][j].Red;
+            resizedImage[x_offset][y_offset*factor + 1].Green  = pixels[i][j].Green;
+            resizedImage[x_offset][y_offset*factor + 1].Blue   = pixels[i][j].Blue;
+
+            //p.3
+            resizedImage[x_offset*factor + 1 ][y_offset*factor + 1].Red    = pixels[i][j].Red;
+            resizedImage[x_offset*factor + 1 ][y_offset*factor + 1].Green  = pixels[i][j].Green;
+            resizedImage[x_offset*factor + 1 ][y_offset*factor + 1].Blue   = pixels[i][j].Blue;
+            printf("Ok here\n");
+        }
+    }
+    setHeaderDimensions(headerBuffer, factor*width, factor*height);
+    freeImageMatrix(pixels, width, height);
+    pixels = allocMatrix( factor*width, factor*height );
+    copyImageBuffer(resizedImage,pixels, factor*width, factor*height);
     return ;
 }        // -----  end of function increaseSize  -----
 

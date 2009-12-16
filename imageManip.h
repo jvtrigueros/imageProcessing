@@ -108,7 +108,7 @@ pixelData boxBlur( pixelData **pixels, int i, int j );
 //         Name:  increaseSize()
 //  Description:  Increase the size of the BMP by some factor.
 // ============================================================================
-void increaseSize ( pixelData **pixels, int width, int height, double factor );
+void increaseSize ( pixelData **pixels, int width, int height, unsigned char *headerBuffer);
 
 // ===  FUNCTION  =============================================================
 //         Name:  freeImageMatrix()
